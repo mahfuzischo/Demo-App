@@ -1,19 +1,56 @@
+import 'dart:convert';
 import 'package:demo_app/data/secure_storage.dart';
-import 'package:flutter/material.dart';
+import 'package:demo_app/models/user_model.dart';
+import 'package:demo_app/states/user_state.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
-class AuthenticationViewModel extends ChangeNotifier {
+class AuthenticationViewModel extends Notifier<UserState> {
+  @override
+  UserState build() {
+    getToken();
+    return UserState();
+  }
+
   SecureStorage storage = SecureStorage();
-  bool _isAuthenticated = false;
 
   Future<void> getToken() async {
-    _isAuthenticated = await storage.getTokenBool();
-    // final token = await storage.readToken();
-    //   if (token != null) {
-    //     _isAuthenticated = true;
-    //   } else {
-    //     _isAuthenticated = false;
-    //   }
+    final hasToken = await storage.getTokenBool();
+    if (hasToken) {
+      state = state.copyWith(authenticated: true);
+    }
+  }
 
-    notifyListeners();
+  Future<void> login(String email, String password) async {
+    final String endpoint = 'student/auth/login';
+    final url = Uri.parse('${dotenv.env['base_url']}${endpoint}');
+    final response = await http.post(
+      url,
+      headers: {'content-type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      await storage.writeToken(data['token']);
+      final userData = UserModel(
+        email: email,
+        password: password,
+        token: data['token'],
+      );
+      state = state.copyWith(tempUser: userData, authenticated: true);
+    } else {
+      print("Login failed with status code: ${response.statusCode}");
+    }
+  }
+
+  void logout() {
+    storage.deleteToken();
+    state = state.copyWith(authenticated: false);
   }
 }
+
+final AuthenticationViewModelProvider =
+    NotifierProvider<AuthenticationViewModel, UserState>(() {
+      return AuthenticationViewModel();
+    });
