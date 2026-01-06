@@ -27,29 +27,38 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             ? CircularProgressIndicator(value: 10)
             : communityState.error != null
             ? Text('Error Occured!!!')
-            : Column(
-                children: [
-                  Text('Community Page: '),
+            : communityState.communities == null
+            ? Text('No communities available')
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.9,
+                            ),
+                        itemCount: communityState.communities?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final community = communityState.communities![index];
 
-                  Text(
-                    'First community id: ${communityState.communities?.first.id}',
+                          return CardWidget(
+                            title: community.title,
+                            image: community.thumbnail,
+                            count: community.total_members,
+                            total_feeds: community.total_feeds,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                    itemCount: communityState.communities!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final community = communityState.communities![index];
-                      return CardWidget(
-                        title: community.title,
-                        image: community.thumbnail,
-                        count: community.total_members,
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
       ),
     );

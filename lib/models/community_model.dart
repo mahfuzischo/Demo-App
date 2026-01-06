@@ -3,12 +3,14 @@ class CommunityModel {
   final String title;
   final String thumbnail;
   final int total_members;
+  final int total_feeds; // total posts
 
   CommunityModel({
     required this.id,
     required this.title,
     required this.thumbnail,
     required this.total_members,
+    required this.total_feeds,
   });
 
   factory CommunityModel.fromJSON(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class CommunityModel {
       title: json['title'],
       thumbnail: json['thumbnail'],
       total_members: json['total_members'],
+      total_feeds: json['total_feeds'],
     );
   }
 }

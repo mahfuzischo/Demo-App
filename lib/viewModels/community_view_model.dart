@@ -32,6 +32,7 @@ class CommunityViewModel extends Notifier<CommunityState> {
     );
 
     if (response.statusCode == 200) {
+      print("status code 200");
       final tempData = jsonDecode(response.body)['data'] as List;
       final data = tempData
           .map((json) => CommunityModel.fromJSON(json))
