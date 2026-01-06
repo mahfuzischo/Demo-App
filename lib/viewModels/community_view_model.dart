@@ -17,9 +17,9 @@ class CommunityViewModel extends Notifier<CommunityState> {
   SecureStorage storage = SecureStorage();
 
   Future<void> getCommunityList() async {
-    print("inside getCommunity()");
+    final int page = state.page + 1;
     final String endpoint =
-        '/student/community/getEnrolledCommunityList?str&page=1&limit=10';
+        '/student/community/getEnrolledCommunityList?str&page=${page}&limit=10';
     final url = Uri.parse('${dotenv.env['base_url']}${endpoint}');
     final token = await storage.readToken();
     state = state.copyWith(loadingState: true);
@@ -38,19 +38,17 @@ class CommunityViewModel extends Notifier<CommunityState> {
           .map((json) => CommunityModel.fromJSON(json))
           .toList();
       print('data fetched: ${data.length}}');
-      state = state.copyWith(communityList: data, loadingState: false);
-    } else {
-      print(
-        'failed to load community list. Status code: ${response.statusCode}',
+      state = state.copyWith(
+        communityList: [...state.communities ?? [], ...data],
+        currentPage: page,
+        loadingState: false,
       );
+    } else {
       state = state.copyWith(
         err: 'Error loading community list',
         loadingState: false,
       );
     }
-    print(
-      'failed to load community list. Status code: ${response.statusCode}, this was printed outside if-else funtion',
-    );
   }
 }
 

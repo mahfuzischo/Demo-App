@@ -11,9 +11,17 @@ class CommunityView extends ConsumerStatefulWidget {
 }
 
 class _CommunityViewState extends ConsumerState<CommunityView> {
+  final scrollController = ScrollController();
   @override
   void initState() {
     ref.read(CommunityViewModelProvider.notifier).getCommunityList();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        ref.read(CommunityViewModelProvider.notifier).getCommunityList();
+      }
+    });
+
     super.initState();
   }
 
@@ -35,6 +43,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                   child: Column(
                     children: [
                       GridView.builder(
+                        controller: scrollController,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
