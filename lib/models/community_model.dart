@@ -1,8 +1,8 @@
 class CommunityModel {
-  final String id;
+  final int id;
   final String title;
   final String thumbnail;
-  final String total_members;
+  final int total_members;
 
   CommunityModel({
     required this.id,
