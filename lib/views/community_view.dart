@@ -27,6 +27,12 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final communityState = ref.watch(CommunityViewModelProvider);
     return Scaffold(
@@ -64,7 +70,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return FeedView();
+                                    return FeedView(community_id: community.id);
                                   },
                                 ),
                               );
@@ -72,8 +78,8 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                             child: CardWidget(
                               title: community.title,
                               image: community.thumbnail,
-                              count: community.total_members,
-                              total_feeds: community.total_feeds,
+                              count: community.totalMembers,
+                              total_feeds: community.totalFeeds,
                             ),
                           );
                         },

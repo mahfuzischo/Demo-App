@@ -24,7 +24,7 @@ class AuthenticationViewModel extends Notifier<UserState> {
 
   Future<void> login(String email, String password) async {
     final String endpoint = 'student/auth/login';
-    final url = Uri.parse('${dotenv.env['base_url']}${endpoint}');
+    final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final response = await http.post(
       url,
       headers: {'content-type': 'application/json'},

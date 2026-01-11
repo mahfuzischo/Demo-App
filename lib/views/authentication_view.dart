@@ -21,7 +21,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
 
   @override
   Widget build(BuildContext context) {
-    final authView = ref.watch(AuthenticationViewModelProvider);
+    final authView = ref.watch(authenticationViewModelProvider);
     return Scaffold(
       appBar: AppBar(title: const Text("Auth screen"), centerTitle: true),
       body: Padding(
@@ -58,7 +58,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
                     ElevatedButton(
                       onPressed: () {
                         ref
-                            .read(AuthenticationViewModelProvider.notifier)
+                            .read(authenticationViewModelProvider.notifier)
                             .logout();
                       },
                       child: Text("Logout"),
@@ -87,7 +87,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
                     onPressed: () {
                       print("login pressed");
                       ref
-                          .read(AuthenticationViewModelProvider.notifier)
+                          .read(authenticationViewModelProvider.notifier)
                           .login(emailController.text, passwordController.text);
                       // authView.login(
                       //   emailController.text,

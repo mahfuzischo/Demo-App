@@ -33,9 +33,9 @@ class FeedModel {
 }
 
 class FeedFileModel {
-  final String FileLoc;
-  FeedFileModel({required this.FileLoc});
+  final String fileLocation;
+  FeedFileModel({required this.fileLocation});
   factory FeedFileModel.fromJSON(Map<String, dynamic> json) {
-    return FeedFileModel(FileLoc: json['fileLoc']);
+    return FeedFileModel(fileLocation: json['fileLoc']);
   }
 }
