@@ -50,7 +50,7 @@ class AuthenticationViewModel extends Notifier<UserState> {
   }
 }
 
-final AuthenticationViewModelProvider =
+final authenticationViewModelProvider =
     NotifierProvider<AuthenticationViewModel, UserState>(() {
       return AuthenticationViewModel();
     });
