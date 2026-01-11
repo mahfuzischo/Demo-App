@@ -1,4 +1,5 @@
 import 'package:demo_app/viewModels/community_view_model.dart';
+import 'package:demo_app/views/feed_view.dart';
 import 'package:demo_app/views/widgets/cardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,11 +58,23 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                         itemBuilder: (BuildContext context, int index) {
                           final community = communityState.communities![index];
 
-                          return CardWidget(
-                            title: community.title,
-                            image: community.thumbnail,
-                            count: community.total_members,
-                            total_feeds: community.total_feeds,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return FeedView();
+                                  },
+                                ),
+                              );
+                            },
+                            child: CardWidget(
+                              title: community.title,
+                              image: community.thumbnail,
+                              count: community.total_members,
+                              total_feeds: community.total_feeds,
+                            ),
                           );
                         },
                       ),
