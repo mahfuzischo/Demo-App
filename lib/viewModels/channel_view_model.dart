@@ -16,8 +16,8 @@ class ChannelViewModel extends Notifier<ChannelState> {
   SecureStorage storage = SecureStorage();
 
   Future<void> getChannelList(int communityId) async {
-    final String endpoint = '/public/communities/${communityId}/spaces';
-    final url = Uri.parse('${dotenv.env['base_url']}${endpoint}');
+    final String endpoint = '/public/communities/$communityId/spaces';
+    final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
     state = state.copyWith(loadingState: true);
     final response = await http.get(
@@ -31,7 +31,7 @@ class ChannelViewModel extends Notifier<ChannelState> {
       print('Status code: 200');
       final tData = jsonDecode(response.body) as List;
       final data = tData.map((m) => ChannelModel.fromJSON(m)).toList();
-      print('data: ${data}');
+      print('data: $data');
       state = state.copyWith(channelList: data, loadingState: false);
     } else {
       state = state.copyWith(

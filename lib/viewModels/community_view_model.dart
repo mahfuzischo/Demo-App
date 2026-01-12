@@ -19,15 +19,15 @@ class CommunityViewModel extends Notifier<CommunityState> {
   Future<void> getCommunityList() async {
     final int page = state.page + 1;
     final String endpoint =
-        '/student/community/getEnrolledCommunityList?str&page=${page}&limit=10';
-    final url = Uri.parse('${dotenv.env['base_url']}${endpoint}');
+        '/student/community/getEnrolledCommunityList?str&page=$page&limit=10';
+    final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
     state = state.copyWith(loadingState: true);
     final response = await http.get(
       url,
       headers: {
         'content-type': 'application/json',
-        'Authorization': 'Bearer ${token}',
+        'Authorization': 'Bearer $token',
       },
     );
 

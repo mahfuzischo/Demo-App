@@ -40,8 +40,8 @@ class CardWidget extends StatelessWidget {
                 crossAxisAlignment: .start,
                 children: [
                   Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text("Members: ${count}"),
-                  Text('Posts: ${total_feeds}'),
+                  Text("Members: $count"),
+                  Text('Posts: $total_feeds'),
                 ],
               ),
             ),
