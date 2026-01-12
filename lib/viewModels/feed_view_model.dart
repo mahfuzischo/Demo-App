@@ -14,7 +14,7 @@ class FeedViewModel extends Notifier<FeedState> {
   }
 
   SecureStorage storage = SecureStorage();
-  Future<void> fetchFeed(int communityId, int channelId) async {
+  Future<List<FeedModel>> fetchFeed(int communityId, int channelId) async {
     final endpoint =
         '/public/feeds/$communityId?space_id=$channelId&status=saved&more=';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
@@ -31,12 +31,16 @@ class FeedViewModel extends Notifier<FeedState> {
     if (response.statusCode == 200) {
       final tData = jsonDecode(response.body) as List;
       final data = tData.map((m) => FeedModel.fromJSON(m)).toList();
+
       state = state.copyWith(feedList: data, loadingState: false);
+
+      return data;
     } else {
       state = state.copyWith(
         err: 'Failed to fetch feed data. Status code: ${response.statusCode}',
         loadingState: false,
       );
+      return [];
     }
   }
 }

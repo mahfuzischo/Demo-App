@@ -15,19 +15,36 @@ class FeedView extends ConsumerStatefulWidget {
 
 class _FeedViewState extends ConsumerState<FeedView> {
   ChannelModel? selectedChannel;
+  List<ChannelModel> channelsList = [];
+  List<FeedModel> feedList = [];
   @override
   void initState() {
-    ref
-        .read(ChannelViewModelProvider.notifier)
-        .getChannelList(widget.community_id);
+    fetchData();
 
     super.initState();
+  }
+
+  void fetchData() async {
+    setState(() async {
+      channelsList = await ref
+          .read(ChannelViewModelProvider.notifier)
+          .getChannelList(widget.community_id);
+    });
+  }
+
+  void fetchFeeds() async {
+    setState(() async {
+      feedList = await ref
+          .read(feedViewModelProvider.notifier)
+          .fetchFeed(widget.community_id, selectedChannel!.id);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final channelState = ref.watch(ChannelViewModelProvider);
     selectedChannel = channelState.channels?.first;
+
     final data = ref.watch(feedViewModelProvider).feeds;
 
     return Scaffold(
@@ -53,7 +70,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
           },
         ),
       ),
-      body: selectedChannel == null
+      body: data == null
           ? Center(child: CircularProgressIndicator(value: 1000))
           : Padding(
               padding: const EdgeInsets.all(10),
@@ -121,7 +138,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                     onTap: () {
                       setState(() {
                         selectedChannel = channel;
-                        print('channell updated');
+                        fetchFeeds();
                       });
                     },
                     child: Container(
