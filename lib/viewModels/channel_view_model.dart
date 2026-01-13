@@ -14,8 +14,8 @@ class ChannelViewModel extends Notifier<ChannelState> {
   }
 
   SecureStorage storage = SecureStorage();
-
-  Future<List<ChannelModel>> getChannelList(int communityId) async {
+  // Future<List<ChannelModel>>
+  Future<void> getChannelList(int communityId) async {
     final String endpoint = '/public/communities/$communityId/spaces';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
@@ -28,18 +28,20 @@ class ChannelViewModel extends Notifier<ChannelState> {
       },
     );
     if (response.statusCode == 200) {
-      print('Status code: 200');
+      print('Status code: 200 in getChannelList');
       final tData = jsonDecode(response.body) as List;
       final data = tData.map((m) => ChannelModel.fromJSON(m)).toList();
       print('data: $data');
       state = state.copyWith(channelList: data, loadingState: false);
-      return data;
+      print('channellist data updated successfully');
+      // return data;
     } else {
+      print('Error fetching channel list status code: ${response.statusCode}');
       state = state.copyWith(
         err: 'Error loading channel list',
         loadingState: false,
       );
-      return [];
+      // return [];
     }
   }
 }

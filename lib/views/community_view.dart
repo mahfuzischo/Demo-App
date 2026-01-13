@@ -70,7 +70,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return FeedView(community_id: community.id);
+                                    return FeedView(communityId: community.id);
                                   },
                                 ),
                               );
