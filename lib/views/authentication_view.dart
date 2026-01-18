@@ -1,5 +1,6 @@
 import 'package:demo_app/viewModels/authentication_view_model.dart';
 import 'package:demo_app/views/community_view.dart';
+import 'package:demo_app/views/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -66,39 +67,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
                   ],
                 ),
               )
-            : Column(
-                children: [
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your email...',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your password...',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      print("login pressed");
-                      ref
-                          .read(authenticationViewModelProvider.notifier)
-                          .login(emailController.text, passwordController.text);
-                      // authView.login(
-                      //   emailController.text,
-                      //   passwordController.text,
-                      // );
-                      print("email in ui: ${emailController.text}");
-                    },
-                    child: const Text('Login'),
-                  ),
-                ],
-              ),
+            : LoginScreen(),
       ),
     );
   }

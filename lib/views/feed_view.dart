@@ -1,7 +1,9 @@
 import 'package:demo_app/models/channel_model.dart';
 import 'package:demo_app/models/feed_model.dart';
+import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
+import 'package:demo_app/views/widgets/community_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,11 +20,21 @@ class _FeedViewState extends ConsumerState<FeedView> {
 
   @override
   void initState() {
+    super.initState();
     ref
         .read(ChannelViewModelProvider.notifier)
         .getChannelList(widget.communityId);
 
-    super.initState();
+    // ref.listen<ChannelState>(ChannelViewModelProvider, (_, currentState) {
+    //   if (selectedChannel == null &&
+    //       currentState.channels != null &&
+    //       currentState.channels!.isNotEmpty) {
+    //     selectedChannel = currentState.channels!.first;
+    //     ref
+    //         .read(feedViewModelProvider.notifier)
+    //         .fetchFeed(widget.communityId, selectedChannel!.id);
+    //   }
+    // });
   }
 
   void fetchFeeds() async {
@@ -58,7 +70,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
         ),
       ),
       body: feeds == null || feeds!.isEmpty
-          ? Center(child: CircularProgressIndicator(value: 500))
+          ? Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(10),
               child: ListView.builder(
@@ -126,54 +138,6 @@ class _FeedViewState extends ConsumerState<FeedView> {
         commId: widget.communityId,
         selectedChannel: selectedChannel,
       ),
-    );
-  }
-}
-
-class CommunityDrawer extends ConsumerWidget {
-  const CommunityDrawer({
-    super.key,
-    required this.onTapDrawerTile,
-    required this.commId,
-    required this.selectedChannel,
-  });
-
-  final void Function(ChannelModel) onTapDrawerTile;
-  final int commId;
-  final ChannelModel? selectedChannel;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final channelState = ref.watch(ChannelViewModelProvider);
-    if ((channelState.channels ?? []).isNotEmpty || selectedChannel == null) {
-      ref
-          .read(feedViewModelProvider.notifier)
-          .fetchFeed(commId, channelState.channels!.first.id);
-    }
-
-    return Drawer(
-      child: channelState.isLoading
-          ? CircularProgressIndicator()
-          : ListView.builder(
-              itemCount: channelState.channels?.length,
-              itemBuilder: (BuildContext context, int index) {
-                final channel = channelState.channels![index];
-                return GestureDetector(
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    onTapDrawerTile.call(channel);
-                  },
-                  child: Container(
-                    // decoration: BoxDecoration(
-                    //   color: channel.id == selectedChannel!.id
-                    //       ? Colors.grey
-                    //       : Colors.transparent,
-                    // ),
-                    child: ListTile(title: Text(channel.name)),
-                  ),
-                );
-              },
-            ),
     );
   }
 }
