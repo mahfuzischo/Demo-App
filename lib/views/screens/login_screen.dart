@@ -17,43 +17,84 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SafeArea(
+      appBar: null,
+      body: SingleChildScrollView(
         child: Container(
+          height: screenHeight,
           width: double.infinity,
           decoration: BoxDecoration(color: Color.fromRGBO(17, 93, 104, 1.0)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Spacer(flex: 1),
-                Container(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 60),
-                      Image(
-                        image: AssetImage('assets/EzyCourse_logo.png'),
-                        height: 80,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(height: 60),
-                    ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Expanded(
+              //   flex: 3,
+              //   child: Column(
+              //     crossAxisAlignment: .center,
+              //     children: [
+              //       Image(
+              //         image: AssetImage('assets/EzyCourse_logo.png'),
+              //         height: 120,
+              //         fit: BoxFit.contain,
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Container(
+                height: (screenHeight / 7) * 3,
+                child: Center(
+                  child: Image(
+                    image: AssetImage('assets/EzyCourse_logo.png'),
+                    height: 120,
+                    fit: BoxFit.contain,
                   ),
                 ),
-
-                // Spacer(flex: 1),
-                Container(
+              ),
+              Expanded(
+                flex: 4,
+                child: Container(
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(7, 81, 91, 1.0),
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(25),
+                      top: Radius.circular(45),
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5), // Shadow color
+                        spreadRadius: 10, // How much the shadow spreads
+                        blurRadius: 1, // How blurred the shadow is
+                        offset: Offset(
+                          -.1,
+                          .1,
+                        ), // Horizontal and vertical offset
+                      ),
+                    ],
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(30),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: .start,
                       children: [
-                        const SizedBox(height: 20),
+                        Center(
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        Text(
+                          'Email',
+                          style: TextStyle(color: Colors.white54, fontSize: 18),
+                        ),
+                        SizedBox(height: 6),
                         TextField(
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                           controller: emailController,
                           decoration: InputDecoration(
                             fillColor: Color.fromRGBO(38, 105, 113, 1),
@@ -67,16 +108,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
+                        Text(
+                          'Password',
+                          style: TextStyle(color: Colors.white54, fontSize: 16),
+                        ),
+                        SizedBox(height: 6),
                         TextField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                           controller: passwordController,
+                          obscureText: viewPassword,
                           decoration: InputDecoration(
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
                                   viewPassword = !viewPassword;
                                 });
-                                print("view: ${viewPassword}");
                               },
                               child: viewPassword
                                   ? Icon(
@@ -100,29 +146,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         SizedBox(height: 20),
                         CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          side: BorderSide(color: Colors.white54, width: 1.5),
+
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(
                             "Remember Me",
-                            selectionColor: Colors.white,
+                            style: TextStyle(color: Colors.white),
                           ),
                           value: rememberMe,
                           onChanged: (bool? newValue) {
                             setState(() {
-                              rememberMe = !rememberMe;
+                              rememberMe = newValue ?? false;
+                              print("rememberMe: ${rememberMe}");
                             });
                           },
+                          activeColor: Color.fromRGBO(232, 245, 74, 1),
+                          checkColor: Color.fromRGBO(7, 81, 91, 1.0),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
+                          height: 50,
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(232, 245, 74, 1),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(9),
                               ),
                             ),
                             onPressed: () {
-                              print("login pressed");
                               ref
                                   .read(
                                     authenticationViewModelProvider.notifier,
@@ -134,7 +187,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             },
                             child: const Text(
                               'Login',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromRGBO(38, 105, 113, 1),
+                              ),
                             ),
                           ),
                         ),
@@ -142,8 +199,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

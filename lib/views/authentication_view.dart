@@ -24,51 +24,48 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
   Widget build(BuildContext context) {
     final authView = ref.watch(authenticationViewModelProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text("Auth screen"), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: authView.isAuthenticated
-            ? Center(
-                child: Column(
-                  children: [
-                    Text("Hello ${authView.user?.email}"),
+      // appBar: AppBar(title: const Text("Auth screen"), centerTitle: true),
+      body: authView.isAuthenticated
+          ? Center(
+              child: Column(
+                children: [
+                  Text("Hello ${authView.user?.email}"),
 
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(builder: (context) => FeedView()),
-                    //     );
-                    //   },
-                    //   child: Text('Feed page'),
-                    // ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return CommunityView();
-                            },
-                          ),
-                        );
-                      },
-                      child: Text("Community Page"),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        ref
-                            .read(authenticationViewModelProvider.notifier)
-                            .logout();
-                      },
-                      child: Text("Logout"),
-                    ),
-                  ],
-                ),
-              )
-            : LoginScreen(),
-      ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(builder: (context) => FeedView()),
+                  //     );
+                  //   },
+                  //   child: Text('Feed page'),
+                  // ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CommunityView();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text("Community Page"),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(authenticationViewModelProvider.notifier)
+                          .logout();
+                    },
+                    child: Text("Logout"),
+                  ),
+                ],
+              ),
+            )
+          : LoginScreen(),
     );
   }
 }
