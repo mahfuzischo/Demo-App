@@ -126,11 +126,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               },
                               child: viewPassword
                                   ? Icon(
-                                      Icons.visibility_off,
+                                      Icons.visibility_off_outlined,
                                       color: Colors.white,
                                     )
                                   : Icon(
-                                      Icons.visibility_rounded,
+                                      Icons.visibility_outlined,
                                       color: Colors.white,
                                     ),
                             ),
