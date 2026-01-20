@@ -9,7 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FeedView extends ConsumerStatefulWidget {
   final int communityId;
-  const FeedView({super.key, required this.communityId});
+  final String communityName;
+  const FeedView({
+    super.key,
+    required this.communityId,
+    required this.communityName,
+  });
 
   @override
   ConsumerState<FeedView> createState() => _FeedViewState();
@@ -24,6 +29,8 @@ class _FeedViewState extends ConsumerState<FeedView> {
     ref
         .read(ChannelViewModelProvider.notifier)
         .getChannelList(widget.communityId);
+
+    print('channels fetched');
 
     // ref.listen<ChannelState>(ChannelViewModelProvider, (_, currentState) {
     //   if (selectedChannel == null &&
@@ -56,7 +63,10 @@ class _FeedViewState extends ConsumerState<FeedView> {
             icon: Icon(Icons.arrow_back),
           ),
         ],
-        title: Text("Feed"),
+        title: Text(
+          widget.communityName,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
         centerTitle: true,
         leading: Builder(
           builder: (context) {

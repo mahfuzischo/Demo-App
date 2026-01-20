@@ -61,13 +61,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5), // Shadow color
-                        spreadRadius: 10, // How much the shadow spreads
-                        blurRadius: 1, // How blurred the shadow is
-                        offset: Offset(
-                          -.1,
-                          .1,
-                        ), // Horizontal and vertical offset
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: .5,
+                        offset: Offset(5, 0),
                       ),
                     ],
                   ),

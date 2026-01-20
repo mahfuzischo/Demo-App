@@ -22,6 +22,7 @@ class AuthenticationViewModel extends Notifier<UserState> {
     }
   }
 
+  //  Future<void> login(String email, String password, bool rememberMe) async {
   Future<void> login(String email, String password) async {
     final String endpoint = 'student/auth/login';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
@@ -31,6 +32,7 @@ class AuthenticationViewModel extends Notifier<UserState> {
       body: jsonEncode({'email': email, 'password': password}),
     );
     if (response.statusCode == 200) {
+      // storage.writeToken(token) // need to add code to remember credentials in the login screen
       final data = jsonDecode(response.body);
       await storage.writeToken(data['token']);
       final userData = UserModel(

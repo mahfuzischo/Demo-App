@@ -9,6 +9,11 @@ class SecureStorage {
     await secureStorage.write(key: token_key, value: token);
   }
 
+  Future<void> saveCredentials(String email, String password) async {
+    await secureStorage.write(key: token_key, value: email);
+    await secureStorage.write(key: token_key, value: password);
+  }
+
   Future<String?> readToken() async {
     String? data = await secureStorage.read(key: token_key);
     return data;

@@ -36,10 +36,17 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
   Widget build(BuildContext context) {
     final communityState = ref.watch(CommunityViewModelProvider);
     return Scaffold(
-      appBar: AppBar(title: Text('My Communities')),
+      appBar: AppBar(
+        title: Text(
+          'My Communities',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(7, 81, 91, 1.0),
+      ),
       body: Center(
         child: communityState.isLoading
-            ? CircularProgressIndicator(value: 10)
+            ? CircularProgressIndicator()
             : communityState.error != null
             ? Text('Error Occured!!!')
             : communityState.communities == null
@@ -51,7 +58,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                     children: [
                       GridView.builder(
                         controller: scrollController,
-                        physics: NeverScrollableScrollPhysics(),
+                        // physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -70,7 +77,10 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return FeedView(communityId: community.id);
+                                    return FeedView(
+                                      communityId: community.id,
+                                      communityName: community.title,
+                                    );
                                   },
                                 ),
                               );
