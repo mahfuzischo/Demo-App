@@ -51,52 +51,43 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             ? Text('Error Occured!!!')
             : communityState.communities == null
             ? Text('No communities available')
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      GridView.builder(
-                        controller: scrollController,
-                        // physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.9,
-                            ),
-                        itemCount: communityState.communities?.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final community = communityState.communities![index];
-
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return FeedView(
-                                      communityId: community.id,
-                                      communityName: community.title,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: CardWidget(
-                              title: community.title,
-                              image: community.thumbnail,
-                              count: community.totalMembers,
-                              total_feeds: community.totalFeeds,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+            : GridView.builder(
+                padding: EdgeInsets.all(10),
+                controller: scrollController,
+                // physics: NeverScrollableScrollPhysics(),
+                // shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.9,
                 ),
+                itemCount: communityState.communities?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final community = communityState.communities![index];
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FeedView(
+                              communityId: community.id,
+                              communityName: community.title,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: CardWidget(
+                      title: community.title,
+                      image: community.thumbnail,
+                      count: community.totalMembers,
+                      total_feeds: community.totalFeeds,
+                    ),
+                  );
+                },
               ),
       ),
     );

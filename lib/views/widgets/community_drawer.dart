@@ -27,8 +27,9 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
 
     final channelState = ref.read(ChannelViewModelProvider);
 
-    if ((channelState.channels ?? []).isNotEmpty ||
+    if ((channelState.channels ?? []).isNotEmpty &&
         widget.selectedChannel == null) {
+      print("selected channel found null");
       ref
           .read(feedViewModelProvider.notifier)
           .fetchFeed(widget.commId, channelState.channels!.first.id);
@@ -55,6 +56,10 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
                   child: ListTile(
                     title: Text(channel.name),
                     // selected: channel.id == widget.selectedChannel?.id,
+                    // selectedColor: Color.fromRGBO(7, 81, 91, 1.0),
+                    tileColor: channel.id == widget.selectedChannel?.id
+                        ? Color.fromRGBO(7, 81, 91, .5)
+                        : Colors.transparent,
                   ),
                 );
               },

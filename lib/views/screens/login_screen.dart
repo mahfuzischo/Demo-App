@@ -57,14 +57,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(7, 81, 91, 1.0),
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(45),
+                      top: Radius.circular(50),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: .5,
-                        offset: Offset(5, 0),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 0),
                       ),
                     ],
                   ),
