@@ -37,16 +37,20 @@ class CommunityViewModel extends Notifier<CommunityState> {
       final data = tempData
           .map((json) => CommunityModel.fromJSON(json))
           .toList();
-
+      print('data fetched: ${data.length}}');
       state = state.copyWith(
         communityList: [...state.communities ?? [], ...data],
         currentPage: page,
         loadingState: false,
       );
-
+      print('total page: ${totalPage}');
       if (state.communities!.length == totalPage) {
+        print('inside if condition');
         state = state.copyWith(hasMaxed: true);
+        print(state.maxFetched);
       }
+      print("total communities: ${state.communities!.length}");
+      print("has maxed: ${state.maxFetched}");
     } else {
       state = state.copyWith(
         err: 'Error loading community list',

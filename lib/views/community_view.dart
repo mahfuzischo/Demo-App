@@ -59,6 +59,8 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             : GridView.builder(
                 padding: EdgeInsets.all(10),
                 controller: scrollController,
+                // physics: NeverScrollableScrollPhysics(),
+                // shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5,
