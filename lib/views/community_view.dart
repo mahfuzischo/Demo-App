@@ -13,12 +13,15 @@ class CommunityView extends ConsumerStatefulWidget {
 
 class _CommunityViewState extends ConsumerState<CommunityView> {
   final scrollController = ScrollController();
+  bool maxCommunites = false;
+
   @override
   void initState() {
     ref.read(CommunityViewModelProvider.notifier).getCommunityList();
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+              scrollController.offset &&
+          maxCommunites == false) {
         ref.read(CommunityViewModelProvider.notifier).getCommunityList();
       }
     });
@@ -35,6 +38,8 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
   @override
   Widget build(BuildContext context) {
     final communityState = ref.watch(CommunityViewModelProvider);
+    maxCommunites = communityState.maxFetched;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,8 +59,6 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             : GridView.builder(
                 padding: EdgeInsets.all(10),
                 controller: scrollController,
-                // physics: NeverScrollableScrollPhysics(),
-                // shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5,

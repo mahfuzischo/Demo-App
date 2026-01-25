@@ -44,6 +44,11 @@ class ChannelViewModel extends Notifier<ChannelState> {
       // return [];
     }
   }
+
+  void resetChannels() {
+    // List<ChannelModel>? channelss;
+    state = state.copyWith(channelList: []);
+  }
 }
 
 final ChannelViewModelProvider =

@@ -32,17 +32,21 @@ class CommunityViewModel extends Notifier<CommunityState> {
     );
 
     if (response.statusCode == 200) {
-      print("status code 200");
+      final int totalPage = jsonDecode(response.body)['meta']['total'];
       final tempData = jsonDecode(response.body)['data'] as List;
       final data = tempData
           .map((json) => CommunityModel.fromJSON(json))
           .toList();
-      print('data fetched: ${data.length}}');
+
       state = state.copyWith(
         communityList: [...state.communities ?? [], ...data],
         currentPage: page,
         loadingState: false,
       );
+
+      if (state.communities!.length == totalPage) {
+        state = state.copyWith(hasMaxed: true);
+      }
     } else {
       state = state.copyWith(
         err: 'Error loading community list',

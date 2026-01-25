@@ -5,12 +5,14 @@ class CommunityState {
   final bool isLoading;
   final String? error;
   final int page;
+  final bool maxFetched;
 
   CommunityState({
     this.communities,
     this.isLoading = false,
     this.error,
     this.page = 0,
+    this.maxFetched = false,
   });
 
   CommunityState copyWith({
@@ -18,12 +20,14 @@ class CommunityState {
     bool? loadingState,
     String? err,
     int? currentPage,
+    bool? hasMaxed,
   }) {
     return CommunityState(
       communities: communityList ?? communities,
       isLoading: loadingState ?? isLoading,
       error: err ?? error,
       page: currentPage ?? page,
+      maxFetched: hasMaxed ?? maxFetched,
     );
   }
 }

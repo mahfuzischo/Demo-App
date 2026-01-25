@@ -31,23 +31,6 @@ class _FeedViewState extends ConsumerState<FeedView> {
         .getChannelList(widget.communityId);
 
     print('channels fetched');
-
-    // ref.listen<ChannelState>(ChannelViewModelProvider, (
-    //   prevState,
-    //   currentState,
-    // ) {
-    //   print("inside listener");
-    //   if (prevState?.channels == null &&
-    //       currentState.channels != null &&
-    //       currentState.channels!.isNotEmpty &&
-    //       selectedChannel == null) {
-    //     selectedChannel = currentState.channels!.first;
-    //     print("selected channel id: ${selectedChannel!.id}");
-    //     ref
-    //         .read(feedViewModelProvider.notifier)
-    //         .fetchFeed(widget.communityId, selectedChannel!.id);
-    //   }
-    // });
   }
 
   void fetchFeeds() async {
@@ -80,6 +63,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
         actions: [
           IconButton(
             onPressed: () {
+              ref.read(ChannelViewModelProvider.notifier).resetChannels();
               Navigator.pop(context);
             },
             icon: Icon(Icons.close, color: Colors.white),
@@ -112,7 +96,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                 : Padding(
                     padding: const EdgeInsets.all(10),
                     child: ListView.builder(
-                      itemCount: feeds!.length,
+                      itemCount: feeds.length,
                       itemBuilder: (BuildContext context, int index) {
                         FeedModel feed = feeds[index];
 
