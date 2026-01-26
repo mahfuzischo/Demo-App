@@ -11,7 +11,7 @@ class CommunityViewModel extends Notifier<CommunityState> {
   // bool isLoading = false;
   @override
   build() {
-    return CommunityState();
+    return CommunityState(communities: []);
   }
 
   SecureStorage storage = SecureStorage();
@@ -22,7 +22,12 @@ class CommunityViewModel extends Notifier<CommunityState> {
         '/student/community/getEnrolledCommunityList?str&page=$page&limit=10';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
-    state = state.copyWith(loadingState: true);
+
+    if (state.communities.isEmpty) {
+      state = state.copyWith(loadingState: true);
+    } else {
+      state = state.copyWith(newCommunities: true);
+    }
     final response = await http.get(
       url,
       headers: {
@@ -37,24 +42,20 @@ class CommunityViewModel extends Notifier<CommunityState> {
       final data = tempData
           .map((json) => CommunityModel.fromJSON(json))
           .toList();
-      print('data fetched: ${data.length}}');
       state = state.copyWith(
         communityList: [...state.communities ?? [], ...data],
         currentPage: page,
         loadingState: false,
+        newCommunities: false,
       );
-      print('total page: ${totalPage}');
       if (state.communities!.length == totalPage) {
-        print('inside if condition');
         state = state.copyWith(hasMaxed: true);
-        print(state.maxFetched);
       }
-      print("total communities: ${state.communities!.length}");
-      print("has maxed: ${state.maxFetched}");
     } else {
       state = state.copyWith(
         err: 'Error loading community list',
         loadingState: false,
+        newCommunities: false,
       );
     }
   }

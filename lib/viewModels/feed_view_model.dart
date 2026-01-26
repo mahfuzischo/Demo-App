@@ -33,7 +33,6 @@ class FeedViewModel extends Notifier<FeedState> {
       final data = tData.map((m) => FeedModel.fromJSON(m)).toList();
 
       state = state.copyWith(feedList: data, loadingState: false);
-
       return data;
     } else {
       state = state.copyWith(

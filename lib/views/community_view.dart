@@ -54,7 +54,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             ? CircularProgressIndicator()
             : communityState.error != null
             ? Text('Error Occured!!!')
-            : communityState.communities == null
+            : communityState.communities.isEmpty
             ? Text('No communities available')
             : GridView.builder(
                 padding: EdgeInsets.all(10),
@@ -67,9 +67,9 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                   crossAxisCount: 2,
                   childAspectRatio: 0.9,
                 ),
-                itemCount: communityState.communities?.length,
+                itemCount: communityState.communities.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final community = communityState.communities![index];
+                  final community = communityState.communities[index];
 
                   return GestureDetector(
                     onTap: () {
