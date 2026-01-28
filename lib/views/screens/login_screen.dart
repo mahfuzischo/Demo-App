@@ -41,7 +41,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               //     ],
               //   ),
               // ),
-              Container(
+              SizedBox(
                 height: (screenHeight / 7) * 3,
                 child: Center(
                   child: Image(
@@ -69,7 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(30),
+                    padding: EdgeInsets.all(24),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: .start,
@@ -155,7 +155,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           onChanged: (bool? newValue) {
                             setState(() {
                               rememberMe = newValue ?? false;
-                              print("rememberMe: ${rememberMe}");
+                              debugPrint("rememberMe: $rememberMe");
                             });
                           },
                           activeColor: Color.fromRGBO(232, 245, 74, 1),

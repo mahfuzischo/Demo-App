@@ -19,7 +19,7 @@ class FeedViewModel extends Notifier<FeedState> {
         '/public/feeds/$communityId?space_id=$channelId&status=saved&more=';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
-    state = state.copyWith(loadingState: true);
+    state = state.copyWith(loadingState: true, feedList: null);
     final response = await http.get(
       url,
       headers: {

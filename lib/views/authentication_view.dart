@@ -1,7 +1,6 @@
 import 'package:demo_app/viewModels/authentication_view_model.dart';
 import 'package:demo_app/views/community_view.dart';
 import 'package:demo_app/views/screens/login_screen.dart';
-import 'package:demo_app/views/widgets/bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
