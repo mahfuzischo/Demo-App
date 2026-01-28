@@ -25,11 +25,11 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
   void initState() {
     super.initState();
 
-    final channelState = ref.read(ChannelViewModelProvider);
+    final channelState = ref.read(channelViewModelProvider);
 
     if ((channelState.channels ?? []).isNotEmpty &&
         widget.selectedChannel == null) {
-      print("selected channel found null");
+      debugPrint("selected channel found null");
       ref
           .read(feedViewModelProvider.notifier)
           .fetchFeed(widget.commId, channelState.channels!.first.id);
@@ -38,7 +38,7 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final channelState = ref.watch(ChannelViewModelProvider);
+    final channelState = ref.watch(channelViewModelProvider);
 
     return Drawer(
       child: channelState.isLoading

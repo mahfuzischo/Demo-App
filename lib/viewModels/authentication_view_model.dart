@@ -1,7 +1,9 @@
 import 'dart:convert';
+
 import 'package:demo_app/data/secure_storage.dart';
 import 'package:demo_app/models/user_model.dart';
 import 'package:demo_app/states/user_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +44,7 @@ class AuthenticationViewModel extends Notifier<UserState> {
       );
       state = state.copyWith(tempUser: userData, authenticated: true);
     } else {
-      print("Login failed with status code: ${response.statusCode}");
+      debugPrint("Login failed with status code: ${response.statusCode}");
     }
   }
 

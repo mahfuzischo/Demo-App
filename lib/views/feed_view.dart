@@ -27,10 +27,8 @@ class _FeedViewState extends ConsumerState<FeedView> {
   void initState() {
     super.initState();
     ref
-        .read(ChannelViewModelProvider.notifier)
+        .read(channelViewModelProvider.notifier)
         .getChannelList(widget.communityId);
-
-    print('channels fetched');
   }
 
   void fetchFeeds() async {
@@ -41,7 +39,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<ChannelState>(ChannelViewModelProvider, (
+    ref.listen<ChannelState>(channelViewModelProvider, (
       prevState,
       currentState,
     ) {
@@ -88,14 +86,14 @@ class _FeedViewState extends ConsumerState<FeedView> {
           },
         ),
       ),
-      body: feeds == null
+      body: feeds == null || ref.watch(feedViewModelProvider).isLoading
           ? Center(child: CircularProgressIndicator())
           : (feeds.isEmpty
                 ? Center(child: Text("No Posts Yet"))
                 : Padding(
                     padding: const EdgeInsets.all(10),
                     child: ListView.builder(
-                      itemCount: feeds!.length,
+                      itemCount: feeds.length,
                       itemBuilder: (BuildContext context, int index) {
                         FeedModel feed = feeds[index];
 
@@ -153,7 +151,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
 
       drawer: CommunityDrawer(
         onTapDrawerTile: (channel) {
-          print('channel id: ${channel.id}');
+          debugPrint('channel id: ${channel.id}');
           setState(() {
             selectedChannel = channel;
           });

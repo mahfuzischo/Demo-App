@@ -1,5 +1,5 @@
 import 'package:demo_app/viewModels/community_view_model.dart';
-import 'package:demo_app/views/feed_view.dart';
+import 'package:demo_app/views/feed_view_v2.dart';
 import 'package:demo_app/views/widgets/cardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +51,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
       ),
       body: Center(
         child: communityState.isLoading
-            ? CircularProgressIndicator()
+            ? CircularProgressIndicator.adaptive()
             : communityState.error != null
             ? Text('Error Occured!!!')
             : communityState.communities.isEmpty
@@ -77,7 +77,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return FeedView(
+                            return FeedViewV2(
                               communityId: community.id,
                               communityName: community.title,
                             );

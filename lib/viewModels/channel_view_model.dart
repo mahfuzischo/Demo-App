@@ -18,7 +18,7 @@ class ChannelViewModel extends Notifier<ChannelState> {
     final String endpoint = '/public/communities/$communityId/spaces';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
-    state = state.copyWith(loadingState: true);
+    state = state.copyWith(loadingState: true, channelList: null);
     final response = await http.get(
       url,
       headers: {
@@ -44,7 +44,7 @@ class ChannelViewModel extends Notifier<ChannelState> {
   }
 }
 
-final ChannelViewModelProvider =
+final channelViewModelProvider =
     NotifierProvider<ChannelViewModel, ChannelState>(() {
       return ChannelViewModel();
     });
