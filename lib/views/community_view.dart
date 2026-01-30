@@ -1,4 +1,5 @@
 import 'package:demo_app/viewModels/community_view_model.dart';
+import 'package:demo_app/views/feed_view.dart';
 import 'package:demo_app/views/feed_view_v2.dart';
 import 'package:demo_app/views/widgets/cardWidget.dart';
 import 'package:flutter/material.dart';
@@ -56,43 +57,61 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
             ? Text('Error Occured!!!')
             : communityState.communities.isEmpty
             ? Text('No communities available')
-            : GridView.builder(
-                padding: EdgeInsets.all(10),
-                controller: scrollController,
-                // physics: NeverScrollableScrollPhysics(),
-                // shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 5,
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.9,
-                ),
-                itemCount: communityState.communities.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final community = communityState.communities[index];
+            : Column(
+                children: [
+                  Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.all(10),
+                      controller: scrollController,
+                      // physics: NeverScrollableScrollPhysics(),
+                      // shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.9,
+                          ),
+                      itemCount: communityState.communities.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final community = communityState.communities[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return FeedViewV2(
-                              communityId: community.id,
-                              communityName: community.title,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return FeedView(
+                                    communityId: community.id,
+                                    communityName: community.title,
+                                  );
+                                },
+                              ),
                             );
                           },
-                        ),
-                      );
-                    },
-                    child: CardWidget(
-                      title: community.title,
-                      image: community.thumbnail,
-                      count: community.totalMembers,
-                      total_feeds: community.totalFeeds,
+                          child: CardWidget(
+                            title: community.title,
+                            image: community.thumbnail,
+                            count: community.totalMembers,
+                            total_feeds: community.totalFeeds,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  if (communityState.loadingMoreData)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                  if (maxCommunites)
+                    Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('No more communities to load'),
+                    ),
+                ],
               ),
       ),
     );

@@ -41,7 +41,7 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
     final channelState = ref.watch(channelViewModelProvider);
 
     return Drawer(
-      child: channelState.isLoading
+      child: channelState.isLoading || channelState.channels == null
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: channelState.channels?.length ?? 0,
@@ -50,8 +50,8 @@ class _CommunityDrawerState extends ConsumerState<CommunityDrawer> {
 
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pop();
                     widget.onTapDrawerTile(channel);
+                    Navigator.of(context).pop();
                   },
                   child: ListTile(
                     title: Text(channel.name),

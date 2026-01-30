@@ -39,20 +39,21 @@ class _FeedViewState extends ConsumerState<FeedView> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<ChannelState>(channelViewModelProvider, (
-      prevState,
-      currentState,
-    ) {
-      if (prevState?.channels == null &&
-          currentState.channels != null &&
-          currentState.channels!.isNotEmpty &&
-          selectedChannel == null) {
-        selectedChannel = currentState.channels!.first;
-        ref
-            .read(feedViewModelProvider.notifier)
-            .fetchFeed(widget.communityId, selectedChannel!.id);
-      }
-    });
+    if (selectedChannel == null) {
+      ref.listen<ChannelState>(channelViewModelProvider, (
+        prevState,
+        currentState,
+      ) {
+        if (prevState?.channels == null &&
+            currentState.channels != null &&
+            currentState.channels!.isNotEmpty) {
+          selectedChannel = currentState.channels!.first;
+          ref
+              .read(feedViewModelProvider.notifier)
+              .fetchFeed(widget.communityId, selectedChannel!.id);
+        }
+      });
+    }
 
     final feeds = ref.watch(feedViewModelProvider).feeds;
     return Scaffold(
@@ -61,6 +62,8 @@ class _FeedViewState extends ConsumerState<FeedView> {
         actions: [
           IconButton(
             onPressed: () {
+              ref.invalidate(feedViewModelProvider);
+              ref.invalidate(channelViewModelProvider);
               Navigator.pop(context);
             },
             icon: Icon(Icons.close, color: Colors.white),
@@ -92,60 +95,74 @@ class _FeedViewState extends ConsumerState<FeedView> {
                 ? Center(child: Text("No Posts Yet"))
                 : Padding(
                     padding: const EdgeInsets.all(10),
-                    child: ListView.builder(
-                      itemCount: feeds.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        FeedModel feed = feeds[index];
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: feeds.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              FeedModel feed = feeds[index];
 
-                        return Column(
-                          crossAxisAlignment: .start,
+                              return Column(
+                                crossAxisAlignment: .start,
 
-                          children: [
-                            ListTile(
-                              title: Text(feed.name),
-                              subtitle: Text(feed.createdAt.toString()),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(feed.pic),
-                              ),
-                              trailing: const Icon(Icons.more_vert),
-                            ),
-                            Text(feed.feedTxt),
-                            if (feed.files.isNotEmpty) ...[
-                              if (feed.files.length == 1)
-                                Image(
-                                  image: NetworkImage(
-                                    feed.files.first.fileLocation,
+                                children: [
+                                  ListTile(
+                                    title: Text(feed.name),
+                                    subtitle: Text(feed.createdAt.toString()),
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(feed.pic),
+                                    ),
+                                    trailing: const Icon(Icons.more_vert),
                                   ),
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                )
-                              else
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 1,
-                                        mainAxisSpacing: 5,
-                                        crossAxisSpacing: 5,
+                                  Text(feed.feedTxt),
+                                  if (feed.files.isNotEmpty) ...[
+                                    if (feed.files.length == 1)
+                                      Image(
+                                        image: NetworkImage(
+                                          feed.files.first.fileLocation,
+                                        ),
+                                        height: 200,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      )
+                                    else
+                                      Expanded(
+                                        child: GridView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                childAspectRatio: 1,
+                                                mainAxisSpacing: 5,
+                                                crossAxisSpacing: 5,
+                                              ),
+                                          itemCount: feed.files.length,
+                                          itemBuilder:
+                                              (
+                                                BuildContext context,
+                                                int fileIndex,
+                                              ) {
+                                                return Image(
+                                                  image: NetworkImage(
+                                                    feed
+                                                        .files[fileIndex]
+                                                        .fileLocation,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                        ),
                                       ),
-                                  itemCount: feed.files.length,
-                                  itemBuilder:
-                                      (BuildContext context, int fileIndex) {
-                                        return Image(
-                                          image: NetworkImage(
-                                            feed.files[fileIndex].fileLocation,
-                                          ),
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                ),
-                            ],
-                          ],
-                        );
-                      },
+                                  ],
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   )),
 
