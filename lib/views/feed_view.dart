@@ -3,6 +3,7 @@ import 'package:demo_app/models/feed_model.dart';
 import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
+import 'package:demo_app/views/post_view.dart';
 import 'package:demo_app/views/widgets/community_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,6 +98,33 @@ class _FeedViewState extends ConsumerState<FeedView> {
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
+                        Container(
+                          color: Colors.grey[300],
+                          child: TextField(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PostView(
+                                    communityId: widget.communityId,
+                                    spaceId: selectedChannel!.id,
+                                  ),
+                                ),
+                              );
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'What\'s on your mind?',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 8.0,
+                              ),
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: ListView.builder(
                             itemCount: feeds.length,
