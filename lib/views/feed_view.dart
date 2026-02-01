@@ -95,36 +95,69 @@ class _FeedViewState extends ConsumerState<FeedView> {
           : (feeds.isEmpty
                 ? Center(child: Text("No Posts Yet"))
                 : Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 15,
+                    ),
                     child: Column(
                       children: [
-                        Container(
-                          color: Colors.grey[300],
-                          child: TextField(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PostView(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return PostView(
                                     communityId: widget.communityId,
                                     spaceId: selectedChannel!.id,
-                                  ),
-                                ),
-                              );
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'What\'s on your mind?',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                                  );
+                                },
                               ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12.0,
-                                vertical: 8.0,
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            // height: 80,
+                            height: 70,
+                            width: double.infinity,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment: .spaceBetween,
+
+                                children: [
+                                  Image.asset("assets/blank_profile.png"),
+                                  Text(
+                                    'What\'s on your mind...',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                  Container(
+                                    height: 35,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(7, 81, 91, 1.0),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Post',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
                         Expanded(
                           child: ListView.builder(
                             itemCount: feeds.length,

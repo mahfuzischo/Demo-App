@@ -19,13 +19,27 @@ class _PostViewState extends ConsumerState<PostView> {
     final postViewData = ref.watch(PostViewModelProvider);
     return Scaffold(
       appBar: AppBar(
+        shadowColor: Colors.black,
+
+        elevation: 1,
+        leadingWidth: 80,
         leading: TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text("Cancel", style: TextStyle(color: Colors.black)),
+          child: Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
         ),
-        title: const Text('Create Post'),
+        title: const Text(
+          'Create Post',
+          style: TextStyle(fontWeight: FontWeight.w400),
+        ),
         centerTitle: true,
         actions: [
           TextButton(
@@ -50,6 +64,7 @@ class _PostViewState extends ConsumerState<PostView> {
               );
 
               ref.read(PostViewModelProvider.notifier).createPost(dummyPost);
+              Navigator.pop(context);
             },
             child: postViewData.isLoading
                 ? const CircularProgressIndicator.adaptive()
@@ -58,6 +73,7 @@ class _PostViewState extends ConsumerState<PostView> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.blue,
+                      fontSize: 16,
                     ),
                   ),
           ),

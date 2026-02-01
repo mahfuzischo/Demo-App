@@ -65,6 +65,7 @@ flutter:
   assets:
       - assets/.env
       - assets/EzyCourse_logo.png
+      - assets/blank_profile.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
