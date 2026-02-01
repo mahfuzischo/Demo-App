@@ -14,6 +14,8 @@ class PostView extends ConsumerStatefulWidget {
 }
 
 class _PostViewState extends ConsumerState<PostView> {
+  TextEditingController feedTxtController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final postViewData = ref.watch(PostViewModelProvider);
@@ -47,7 +49,7 @@ class _PostViewState extends ConsumerState<PostView> {
               PostModel dummyPost = PostModel(
                 communityId: widget.communityId,
                 spaceId: widget.spaceId, // replace with real space ID
-                feedTxt: "Ezy Post test app",
+                feedTxt: feedTxtController.text,
                 uploadType: "photos",
                 isBackground: 0,
                 files: [
@@ -80,7 +82,15 @@ class _PostViewState extends ConsumerState<PostView> {
         ],
       ),
 
-      body: Center(child: Text("Post view ")),
+      body: Column(
+        mainAxisAlignment: .start,
+        children: [
+          TextField(
+            controller: feedTxtController,
+            decoration: InputDecoration(hintText: 'What\'s on your mind...'),
+          ),
+        ],
+      ),
     );
   }
 }
