@@ -52,6 +52,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
           ref
               .read(feedViewModelProvider.notifier)
               .fetchFeed(widget.communityId, selectedChannel!.id);
+          debugPrint("fetched data for new channel");
         }
       });
     }
@@ -63,7 +64,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
         actions: [
           IconButton(
             onPressed: () {
-              ref.invalidate(feedViewModelProvider);
+              // ref.invalidate(feedViewModelProvider);
               ref.invalidate(channelViewModelProvider);
               Navigator.pop(context);
             },
@@ -94,136 +95,138 @@ class _FeedViewState extends ConsumerState<FeedView> {
           ? Center(child: CircularProgressIndicator())
           : (feeds.isEmpty
                 ? Center(child: Text("No Posts Yet"))
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 15,
-                    ),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return PostView(
-                                    communityId: widget.communityId,
-                                    spaceId: selectedChannel!.id,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            // height: 80,
-                            height: 70,
-                            width: double.infinity,
-
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                mainAxisAlignment: .spaceBetween,
-
-                                children: [
-                                  Image.asset("assets/blank_profile.png"),
-                                  Text(
-                                    'What\'s on your mind...',
-                                    style: TextStyle(color: Colors.grey[600]),
-                                  ),
-                                  Container(
-                                    height: 35,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(7, 81, 91, 1.0),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Post',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: feeds.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              FeedModel feed = feeds[index];
-
-                              return Column(
-                                crossAxisAlignment: .start,
-
-                                children: [
-                                  ListTile(
-                                    title: Text(feed.name),
-                                    subtitle: Text(feed.createdAt.toString()),
-                                    leading: CircleAvatar(
-                                      backgroundImage: NetworkImage(feed.pic),
-                                    ),
-                                    trailing: const Icon(Icons.more_vert),
-                                  ),
-                                  Text(feed.feedTxt),
-                                  if (feed.files.isNotEmpty) ...[
-                                    if (feed.files.length == 1)
-                                      Image(
-                                        image: NetworkImage(
-                                          feed.files.first.fileLocation,
-                                        ),
-                                        height: 200,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                      )
-                                    else
-                                      Expanded(
-                                        child: GridView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                childAspectRatio: 1,
-                                                mainAxisSpacing: 5,
-                                                crossAxisSpacing: 5,
-                                              ),
-                                          itemCount: feed.files.length,
-                                          itemBuilder:
-                                              (
-                                                BuildContext context,
-                                                int fileIndex,
-                                              ) {
-                                                return Image(
-                                                  image: NetworkImage(
-                                                    feed
-                                                        .files[fileIndex]
-                                                        .fileLocation,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                );
-                                              },
-                                        ),
-                                      ),
-                                  ],
-                                ],
+                : SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 15,
+                      ),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return PostView(
+                                      communityId: widget.communityId,
+                                      spaceId: selectedChannel!.id,
+                                    );
+                                  },
+                                ),
                               );
                             },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              // height: 80,
+                              height: 70,
+                              width: double.infinity,
+
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment: .spaceBetween,
+
+                                  children: [
+                                    Image.asset("assets/blank_profile.png"),
+                                    Text(
+                                      'What\'s on your mind...',
+                                      style: TextStyle(color: Colors.grey[600]),
+                                    ),
+                                    Container(
+                                      height: 35,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(7, 81, 91, 1.0),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Post',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: feeds.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                FeedModel feed = feeds[index];
+
+                                return Column(
+                                  crossAxisAlignment: .start,
+
+                                  children: [
+                                    ListTile(
+                                      title: Text(feed.name),
+                                      subtitle: Text(feed.createdAt.toString()),
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage(feed.pic),
+                                      ),
+                                      trailing: const Icon(Icons.more_vert),
+                                    ),
+                                    Text(feed.feedTxt),
+                                    if (feed.files.isNotEmpty) ...[
+                                      if (feed.files.length == 1)
+                                        Image(
+                                          image: NetworkImage(
+                                            feed.files.first.fileLocation,
+                                          ),
+                                          height: 200,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        )
+                                      else
+                                        Expanded(
+                                          child: GridView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  childAspectRatio: 1,
+                                                  mainAxisSpacing: 5,
+                                                  crossAxisSpacing: 5,
+                                                ),
+                                            itemCount: feed.files.length,
+                                            itemBuilder:
+                                                (
+                                                  BuildContext context,
+                                                  int fileIndex,
+                                                ) {
+                                                  return Image(
+                                                    image: NetworkImage(
+                                                      feed
+                                                          .files[fileIndex]
+                                                          .fileLocation,
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                          ),
+                                        ),
+                                    ],
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )),
 

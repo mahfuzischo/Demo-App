@@ -15,7 +15,14 @@ class PostView extends ConsumerStatefulWidget {
 
 class _PostViewState extends ConsumerState<PostView> {
   TextEditingController feedTxtController = TextEditingController();
-
+  final List<Color> colors = [
+    Colors.white,
+    Colors.pink,
+    Colors.green,
+    Colors.orange,
+    Colors.red,
+    Colors.blue,
+  ];
   @override
   Widget build(BuildContext context) {
     final postViewData = ref.watch(PostViewModelProvider);
@@ -40,7 +47,7 @@ class _PostViewState extends ConsumerState<PostView> {
         ),
         title: const Text(
           'Create Post',
-          style: TextStyle(fontWeight: FontWeight.w400),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
         ),
         centerTitle: true,
         actions: [
@@ -82,14 +89,48 @@ class _PostViewState extends ConsumerState<PostView> {
         ],
       ),
 
-      body: Column(
-        mainAxisAlignment: .start,
-        children: [
-          TextField(
-            controller: feedTxtController,
-            decoration: InputDecoration(hintText: 'What\'s on your mind...'),
+      body: Container(
+        width: double.infinity,
+        color: const Color.fromRGBO(243, 243, 243, 1),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          child: Column(
+            mainAxisAlignment: .start,
+            children: [
+              Row(
+                mainAxisAlignment: .start,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/blank_profile.png'),
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'John Snow',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+
+                child: TextField(
+                  maxLines: 4,
+                  controller: feedTxtController,
+                  decoration: InputDecoration(
+                    hintText: 'What\'s on your mind?',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
