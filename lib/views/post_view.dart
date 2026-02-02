@@ -2,6 +2,7 @@ import 'package:demo_app/models/post_model.dart';
 import 'package:demo_app/viewModels/post_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostView extends ConsumerStatefulWidget {
@@ -126,6 +127,28 @@ class _PostViewState extends ConsumerState<PostView> {
                     hintText: 'What\'s on your mind?',
                     border: InputBorder.none,
                   ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: colors.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsetsGeometry.all(5),
+                      child: GestureDetector(
+                        child: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                            color: colors[index],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
