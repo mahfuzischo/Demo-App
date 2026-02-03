@@ -151,6 +151,60 @@ class _PostViewState extends ConsumerState<PostView> {
                   },
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.photo),
+                          onPressed: () {
+                            // photo upload
+                          },
+                        ),
+                        Text("Photo"),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.videocam),
+                          onPressed: () {
+                            // video upload
+                          },
+                        ),
+                        Text("Video"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: IconButton(
+                      icon: Icon(Icons.photo),
+                      onPressed: () {
+                        //  capture p
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: IconButton(
+                      icon: Icon(Icons.videocam),
+                      onPressed: () {
+                        //capture video
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
