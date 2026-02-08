@@ -38,6 +38,19 @@ class _FeedViewState extends ConsumerState<FeedView> {
         .fetchFeed(widget.communityId, selectedChannel!.id);
   }
 
+  String getTimeAgo(DateTime date) {
+    final difference = DateTime.now().difference(date);
+    if (difference.inDays > 0) {
+      return "${difference.inDays} days ago";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} hours ago";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes} minutes ago";
+    } else {
+      return "Just Now";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (selectedChannel == null) {
@@ -170,24 +183,98 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                   crossAxisAlignment: .start,
 
                                   children: [
-                                    ListTile(
-                                      title: Text(feed.name),
-                                      subtitle: Text(feed.createdAt.toString()),
-                                      leading: CircleAvatar(
-                                        backgroundImage: NetworkImage(feed.pic),
+                                    Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: BoxBorder.fromLTRB(
+                                          bottom: BorderSide(
+                                            width: 1,
+                                            color: Colors.grey.shade300,
+                                          ),
+                                        ),
                                       ),
-                                      trailing: const Icon(Icons.more_vert),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 8,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: .start,
+
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                feed.pic,
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment: .start,
+                                              children: [
+                                                Text(
+                                                  feed.name,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  getTimeAgo(feed.createdAt),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                    color: Colors.grey.shade600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            InkWell(
+                                              onTap: () {},
+
+                                              child: Icon(
+                                                Icons.more_vert,
+                                                color: Colors.black,
+                                                size: 30,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    Text(feed.feedTxt),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: Text(
+                                        feed.feedTxt,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ),
                                     if (feed.files.isNotEmpty) ...[
                                       if (feed.files.length == 1)
-                                        Image(
-                                          image: NetworkImage(
-                                            feed.files.first.fileLocation,
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 5,
                                           ),
-                                          height: 200,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadiusGeometry.circular(
+                                                  5,
+                                                ),
+                                            child: Image(
+                                              image: NetworkImage(
+                                                feed.files.first.fileLocation,
+                                              ),
+                                              height: 200,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         )
                                       else
                                         Expanded(
@@ -208,13 +295,19 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                                   BuildContext context,
                                                   int fileIndex,
                                                 ) {
-                                                  return Image(
-                                                    image: NetworkImage(
-                                                      feed
-                                                          .files[fileIndex]
-                                                          .fileLocation,
+                                                  return ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadiusGeometry.circular(
+                                                          5,
+                                                        ),
+                                                    child: Image(
+                                                      image: NetworkImage(
+                                                        feed
+                                                            .files[fileIndex]
+                                                            .fileLocation,
+                                                      ),
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    fit: BoxFit.cover,
                                                   );
                                                 },
                                           ),

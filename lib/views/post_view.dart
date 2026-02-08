@@ -64,7 +64,7 @@ class _PostViewState extends ConsumerState<PostView> {
                   PostFile(
                     extname: "jpg",
                     fileLoc:
-                        "https://ezycourse.b-cdn.net/273/cmh8oghw215be9d8z11lq6ks0.jpg",
+                        "https://ezycourse.b-cdn.net/2903/cmldokxpn1mkteq8z04ez2j9p.jpg",
                     originalName:
                         "image_picker_0E563D0A-E6E3-41EE-8E25-B2A5E3A1F60C.jpg",
                     size: 0,
@@ -130,7 +130,8 @@ class _PostViewState extends ConsumerState<PostView> {
                 ),
               ),
               SizedBox(height: 20),
-              Expanded(
+              SizedBox(
+                height: 30,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: colors.length,
@@ -139,8 +140,8 @@ class _PostViewState extends ConsumerState<PostView> {
                       padding: EdgeInsetsGeometry.all(5),
                       child: GestureDetector(
                         child: Container(
-                          height: 20,
                           width: 20,
+                          constraints: BoxConstraints(maxHeight: 20),
                           decoration: BoxDecoration(
                             color: colors[index],
                             borderRadius: BorderRadius.circular(5),
@@ -187,12 +188,16 @@ class _PostViewState extends ConsumerState<PostView> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    color: Colors.white,
-                    child: IconButton(
-                      icon: Icon(Icons.photo),
-                      onPressed: () {
-                        //  capture p
-                      },
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: () {
+                            // video upload
+                          },
+                        ),
+                        Text("Capture Photo"),
+                      ],
                     ),
                   ),
                   Container(
