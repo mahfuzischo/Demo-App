@@ -313,6 +313,60 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                           ),
                                         ),
                                     ],
+                                    //like-comment
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: .spaceBetween,
+                                        children: [
+                                          //like
+                                          GestureDetector(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.thumb_up_outlined,
+                                                  color: Colors.grey.shade700,
+                                                  size: 18,
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "Like",
+                                                  style: TextStyle(
+                                                    color: Colors.grey.shade700,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          //comment
+                                          GestureDetector(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.comment,
+                                                  color: Colors.grey.shade700,
+                                                  size: 18,
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "Comment",
+                                                  style: TextStyle(
+                                                    color: Colors.grey.shade700,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          //comment
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 );
                               },
