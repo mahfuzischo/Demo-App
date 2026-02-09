@@ -16,7 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '${dotenv.env['App_Name']}',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Color(0xFF07515B))),
+      theme: ThemeData(
+        colorScheme: .fromSeed(seedColor: Color(0xFF07515B)),
+        scaffoldBackgroundColor: Color.fromRGBO(243, 243, 243, 1),
+      ),
       home: AuthenticationView(),
     );
   }
