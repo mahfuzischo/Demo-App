@@ -1,4 +1,5 @@
 import 'package:demo_app/models/post_model.dart';
+import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/viewModels/post_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _PostViewState extends ConsumerState<PostView> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               PostModel dummyPost = PostModel(
                 communityId: widget.communityId,
                 spaceId: widget.spaceId, // replace with real space ID
@@ -73,7 +74,12 @@ class _PostViewState extends ConsumerState<PostView> {
                 ],
               );
 
-              ref.read(PostViewModelProvider.notifier).createPost(dummyPost);
+              await ref
+                  .read(PostViewModelProvider.notifier)
+                  .createPost(dummyPost);
+              await ref
+                  .read(feedViewModelProvider.notifier)
+                  .fetchFeed(widget.communityId, widget.spaceId);
               Navigator.pop(context);
             },
             child: postViewData.isLoading

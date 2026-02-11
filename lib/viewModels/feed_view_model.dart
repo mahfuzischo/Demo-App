@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:demo_app/data/secure_storage.dart';
 import 'package:demo_app/models/feed_model.dart';
 import 'package:demo_app/states/feed_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +41,38 @@ class FeedViewModel extends Notifier<FeedState> {
         loadingState: false,
       );
       return [];
+    }
+  }
+
+  Future<void> deleteFeed(int feedId, int communityId) async {
+    final endpoint = '/teacher/community/deleteFeed';
+    final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
+    final token = await storage.readToken();
+    state = state.copyWith(loadingState: true);
+    final response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': 'bearer $token',
+      },
+      body: jsonEncode({"id": feedId, "community_id": communityId}),
+    );
+
+    if (response.statusCode == 200) {
+      state = state.copyWith(loadingState: false, err: null);
+
+      debugPrint(
+        'Post deleted successfully. Status code: ${response.statusCode}',
+      );
+    } else {
+      print("feedID: ${feedId}");
+      print("communityID: ${communityId}");
+      print("body: ${response.body}");
+      state = state.copyWith(
+        loadingState: false,
+        err: 'Failed to delete post. Status code: ${response.statusCode}',
+      );
+      debugPrint('Failed to delete post. Status code: ${response.statusCode}');
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:demo_app/viewModels/channel_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/views/post_view.dart';
 import 'package:demo_app/views/widgets/community_drawer.dart';
+import 'package:demo_app/views/widgets/feedPopupButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -228,14 +229,20 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                               ],
                                             ),
                                             Spacer(),
-                                            InkWell(
-                                              onTap: () {},
+                                            // InkWell(
+                                            //   onTap: () {},
 
-                                              child: Icon(
-                                                Icons.more_vert,
-                                                color: Colors.black,
-                                                size: 30,
-                                              ),
+                                            //   child: Icon(
+                                            //     Icons.more_vert,
+                                            //     color: Colors.black,
+                                            //     size: 30,
+                                            //   ),
+                                            // ),
+                                            // PopupMenuButton(itemBuilder: (context){})
+                                            Feedpopupbutton(
+                                              feedId: feed.feedId,
+                                              communityId: widget.communityId,
+                                              channelId: selectedChannel!.id,
                                             ),
                                           ],
                                         ),

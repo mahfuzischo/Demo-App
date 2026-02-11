@@ -1,4 +1,5 @@
 class FeedModel {
+  final int feedId;
   final int userId;
   final int schoolId;
   final String feedTxt;
@@ -8,6 +9,7 @@ class FeedModel {
   final List<FeedFileModel> files;
 
   FeedModel({
+    required this.feedId,
     required this.userId,
     required this.schoolId,
     required this.name,
@@ -19,6 +21,7 @@ class FeedModel {
 
   factory FeedModel.fromJSON(Map<String, dynamic> json) {
     return FeedModel(
+      feedId: json["id"],
       userId: json["user_id"],
       schoolId: json["school_id"],
       name: json["name"],
