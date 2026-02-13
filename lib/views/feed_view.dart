@@ -229,21 +229,15 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                               ],
                                             ),
                                             Spacer(),
-                                            // InkWell(
-                                            //   onTap: () {},
-
-                                            //   child: Icon(
-                                            //     Icons.more_vert,
-                                            //     color: Colors.black,
-                                            //     size: 30,
-                                            //   ),
-                                            // ),
-                                            // PopupMenuButton(itemBuilder: (context){})
-                                            Feedpopupbutton(
-                                              feedId: feed.feedId,
-                                              communityId: widget.communityId,
-                                              channelId: selectedChannel!.id,
-                                            ),
+                                            selectedChannel != null
+                                                ? Feedpopupbutton(
+                                                    feedId: feed.feedId,
+                                                    communityId:
+                                                        widget.communityId,
+                                                    channelId:
+                                                        selectedChannel!.id,
+                                                  )
+                                                : SizedBox(),
                                           ],
                                         ),
                                       ),
