@@ -6,19 +6,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CommentViewModel extends Notifier<CommentState> {
   @override
-  CommentState build() {
+  build() {
     return CommentState();
   }
 
-  final CommentRepo _repository = CommentRepo();
+  CommentRepo repository = CommentRepo();
 
   Future<void> getComments(int feedId) async {
+    debugPrint("inside getComments");
     state = state.copyWith(loadingState: true);
+    debugPrint("in loading state");
 
     try {
-      final comments = await _repository.getComments(feedId);
-      state = state.copyWith(commentList: comments, loadingState: false);
+      final comments = await repository.getComments(feedId);
       debugPrint("comments fetched $comments");
+      state = state.copyWith(commentList: comments, loadingState: false);
     } catch (e) {
       debugPrint(e.toString());
       state = state.copyWith(err: e.toString(), loadingState: false);

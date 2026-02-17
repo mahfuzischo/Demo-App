@@ -1,4 +1,3 @@
-import 'package:demo_app/viewModels/authentication_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +33,7 @@ class _FeedpopupbuttonState extends ConsumerState<Feedpopupbutton> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("Are you sure you want to logout?"),
+                title: Text("Are you sure you want to delete this post?"),
                 actions: [
                   TextButton(
                     onPressed: () async {

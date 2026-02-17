@@ -4,13 +4,14 @@ import 'package:demo_app/data/secure_storage.dart';
 import 'package:demo_app/models/comment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 class CommentRepo {
   final SecureStorage _storage = SecureStorage();
   Future<List<CommentModel>> getComments(int feedId) async {
     debugPrint("fetcing comments");
-    final String endpoint = '/student/comment/getComment/$feedId';
+    final String endpoint = '/student/comment/getComment/${{feedId}}';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await _storage.readToken();
 
@@ -35,3 +36,5 @@ class CommentRepo {
     }
   }
 }
+
+final commentRepoProvider = Provider((ref) => CommentRepo());

@@ -38,12 +38,11 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                 itemCount: comments.length,
                 itemBuilder: (BuildContext context, int index) {
                   final comment = comments[index];
+                  print("name: ${comment.user.fullName}");
+                  print("image: ${comment.user.id}");
                   return Row(
                     mainAxisAlignment: .start,
                     children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(comment.user.profilePic),
-                      ),
                       SizedBox(width: 10),
                       Container(
                         decoration: BoxDecoration(
