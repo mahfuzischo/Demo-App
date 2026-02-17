@@ -357,11 +357,16 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                           //comment seciton
                                           GestureDetector(
                                             onTap: () {
+                                              debugPrint(
+                                                "feedId in feedView: ${feed.feedId}",
+                                              );
                                               showBottomSheet(
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                      return CommentWidget();
+                                                      return CommentWidget(
+                                                        feedId: feed.feedId,
+                                                      );
                                                     },
                                               );
                                             },

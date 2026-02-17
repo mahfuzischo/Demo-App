@@ -21,7 +21,7 @@ class FeedViewModel extends Notifier<FeedState> {
     );
 
     final endpoint =
-        '/public/feeds/$communityId?space_id=$channelId&status=saved&more=';
+        '/public/feeds/$communityId?space_id=$channelId&status=feed&more=';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
     state = state.copyWith(loadingState: true, feedList: null);
