@@ -23,8 +23,8 @@ class _BottomNavbarState extends ConsumerState<BottomNavbar> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text("Delete Post"),
-                  content: Text("Are you sure you want to delete the post?"),
+                  title: Text("Logout"),
+                  content: Text("Are you sure you want to logout?"),
                   actions: [
                     TextButton(
                       onPressed: () {

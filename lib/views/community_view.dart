@@ -105,12 +105,12 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
                       padding: const EdgeInsets.all(8.0),
                       child: CircularProgressIndicator.adaptive(),
                     ),
-                  if (maxCommunites)
-                    Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('No more communities to load'),
-                    ),
+                  // if (maxCommunites)
+                  //   Container(
+                  //     color: Colors.transparent,
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Text('No more communities to load'),
+                  //   ),
                 ],
               ),
       ),

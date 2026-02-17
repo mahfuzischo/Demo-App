@@ -10,6 +10,17 @@ class CommentWidget extends StatefulWidget {
 class _CommentWidgetState extends State<CommentWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SizedBox(
+      height: 400,
+      width: double.infinity,
+      child: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("Close"),
+        ),
+      ),
+    );
   }
 }

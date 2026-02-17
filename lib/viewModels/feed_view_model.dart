@@ -16,6 +16,10 @@ class FeedViewModel extends Notifier<FeedState> {
 
   SecureStorage storage = SecureStorage();
   Future<List<FeedModel>> fetchFeed(int communityId, int channelId) async {
+    print(
+      "fetching feed data: communityId: ${communityId}, channelId: ${channelId}",
+    );
+
     final endpoint =
         '/public/feeds/$communityId?space_id=$channelId&status=saved&more=';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');

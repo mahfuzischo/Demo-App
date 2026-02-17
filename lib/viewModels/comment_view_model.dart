@@ -1,17 +1,17 @@
 import 'package:demo_app/models/comment_model.dart';
+import 'package:demo_app/repositories/comment_repo.dart';
 import 'package:demo_app/repositories/comment_repository.dart';
 import 'package:demo_app/states/comment_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CommentViewModel extends Notifier<CommentState> {
-  final CommentRepository _repository;
-  CommentViewModel(this._repository);
-
   @override
   CommentState build() {
     return CommentState();
   }
+
+  CommentRepo _repository = CommentRepo();
 
   Future<void> getComments(int feedId) async {
     state = state.copyWith(loadingState: true);

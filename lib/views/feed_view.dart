@@ -4,6 +4,7 @@ import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/views/post_view.dart';
+import 'package:demo_app/views/widgets/comment_widget.dart';
 import 'package:demo_app/views/widgets/community_drawer.dart';
 import 'package:demo_app/views/widgets/feedPopupButton.dart';
 import 'package:flutter/material.dart';
@@ -107,74 +108,83 @@ class _FeedViewState extends ConsumerState<FeedView> {
       ),
       body: feeds == null || ref.watch(feedViewModelProvider).isLoading
           ? Center(child: CircularProgressIndicator())
-          : (feeds.isEmpty
-                ? Center(child: Text("No Posts Yet"))
-                : SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 15,
-                      ),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return PostView(
-                                      communityId: widget.communityId,
-                                      spaceId: selectedChannel!.id,
-                                    );
-                                  },
-                                ),
+          : (SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 15,
+                ),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PostView(
+                                communityId: widget.communityId,
+                                spaceId: selectedChannel!.id,
                               );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        // height: 80,
+                        height: 70,
+                        width: double.infinity,
+
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: .spaceBetween,
+
+                            children: [
+                              Image.asset("assets/blank_profile.png"),
+                              Text(
+                                'What\'s on your mind...',
+                                style: TextStyle(color: Colors.grey[600]),
                               ),
-                              // height: 80,
-                              height: 70,
-                              width: double.infinity,
-
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Row(
-                                  mainAxisAlignment: .spaceBetween,
-
-                                  children: [
-                                    Image.asset("assets/blank_profile.png"),
-                                    Text(
-                                      'What\'s on your mind...',
-                                      style: TextStyle(color: Colors.grey[600]),
+                              Container(
+                                height: 35,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(7, 81, 91, 1.0),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Post',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    Container(
-                                      height: 35,
-                                      width: 60,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(7, 81, 91, 1.0),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Post',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(height: 10),
-                          Expanded(
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    feeds.isEmpty
+                        ? SizedBox(
+                            height:
+                                (MediaQuery.of(context).size.height / 10) * 7,
+                            child: Center(
+                              child: Text(
+                                "No Posts Yet",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          )
+                        : Expanded(
                             child: ListView.builder(
                               itemCount: feeds.length,
                               itemBuilder: (BuildContext context, int index) {
@@ -256,6 +266,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                         ),
                                       ),
                                     ),
+                                    //images section
                                     if (feed.files.isNotEmpty) ...[
                                       if (feed.files.length == 1)
                                         Padding(
@@ -314,7 +325,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                           ),
                                         ),
                                     ],
-                                    //like-comment
+                                    //like-comment section
                                     Padding(
                                       padding: EdgeInsets.symmetric(
                                         vertical: 5,
@@ -322,7 +333,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                       child: Row(
                                         mainAxisAlignment: .spaceBetween,
                                         children: [
-                                          //like
+                                          //like section
                                           GestureDetector(
                                             child: Row(
                                               children: [
@@ -343,8 +354,17 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                               ],
                                             ),
                                           ),
-                                          //comment
+                                          //comment seciton
                                           GestureDetector(
+                                            onTap: () {
+                                              showBottomSheet(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                      return CommentWidget();
+                                                    },
+                                              );
+                                            },
                                             child: Row(
                                               children: [
                                                 Icon(
@@ -364,7 +384,6 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                               ],
                                             ),
                                           ),
-                                          //comment
                                         ],
                                       ),
                                     ),
@@ -373,10 +392,10 @@ class _FeedViewState extends ConsumerState<FeedView> {
                               },
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )),
+                  ],
+                ),
+              ),
+            )),
 
       drawer: CommunityDrawer(
         onTapDrawerTile: (channel) {
