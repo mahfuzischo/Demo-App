@@ -14,9 +14,10 @@ class CommentWidget extends ConsumerStatefulWidget {
 class _CommentWidgetState extends ConsumerState<CommentWidget> {
   @override
   void initState() {
+    Future.microtask(() {
+      ref.read(commentViewModelProvider.notifier).getComments(widget.feedId);
+    });
     super.initState();
-    debugPrint("feed id: ${widget.feedId}");
-    ref.read(commentViewModelProvider.notifier).getComments(widget.feedId);
   }
 
   @override
@@ -31,7 +32,7 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
           borderRadius: BorderRadius.circular(30),
         ),
         child: commentState.isLoading
-            ? Text("Loading")
+            ? Center(child: CircularProgressIndicator())
             : commentState.error != null
             ? Center(child: Text("Error loading comments"))
             : commentState.comments != null && commentState.comments!.isNotEmpty

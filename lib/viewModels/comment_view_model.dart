@@ -17,7 +17,7 @@ class CommentViewModel extends Notifier<CommentState> {
 
   Future<void> getComments(int feedId) async {
     debugPrint("inside getComments");
-    state = state.copyWith(loadingState: true);
+    state = state.copyWith(isLoading: true);
     debugPrint("in loading state");
 
     final SecureStorage _storage = SecureStorage();
@@ -40,15 +40,12 @@ class CommentViewModel extends Notifier<CommentState> {
       final tempData = jsonDecode(response.body) as List;
       final comments = tempData.map((m) => CommentModel.fromJSON(m)).toList();
       debugPrint("comments fetched $comments");
-      state = state.copyWith(commentList: comments, loadingState: false);
+      state = state.copyWith(comments: comments, isLoading: false);
     } else {
       debugPrint(
         "Failed to load comments with status code: ${response.statusCode}",
       );
-      state = state.copyWith(
-        loadingState: false,
-        err: 'Error loading comments',
-      );
+      state = state.copyWith(isLoading: false, error: 'Error loading comments');
     }
   }
 }

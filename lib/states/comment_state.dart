@@ -6,18 +6,17 @@ class CommentState {
   final bool isLoading;
   final String? error;
 
-  CommentState({this.comments, this.error, this.isLoading = false});
+  CommentState({this.comments, this.isLoading = false, this.error});
 
   CommentState copyWith({
-    List<CommentModel>? commentList,
-    bool? loadingState,
-    String? err,
+    List<CommentModel>? comments,
+    bool? isLoading,
+    String? error,
   }) {
-    debugPrint("Loading state updating from copywith");
     return CommentState(
-      comments: commentList ?? comments,
-      isLoading: loadingState ?? isLoading,
-      error: err ?? error,
+      comments: comments ?? this.comments,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
     );
   }
 }
