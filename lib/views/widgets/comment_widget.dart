@@ -21,7 +21,7 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final comments = ref.watch(commentViewModelProvider).comments;
+    final commentState = ref.watch(commentViewModelProvider);
     return SizedBox(
       height: MediaQuery.of(context).size.height * .85,
       width: double.infinity,
@@ -30,14 +30,16 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
           color: Colors.grey.shade300,
           borderRadius: BorderRadius.circular(30),
         ),
-        child: comments == null || ref.watch(commentViewModelProvider).isLoading
-            ? Center(child: CircularProgressIndicator())
-            : comments.isEmpty
-            ? Center(child: Text("No comments available"))
-            : ListView.builder(
-                itemCount: comments.length,
+        child: commentState.isLoading
+            ? Text("Loading")
+            : commentState.error != null
+            ? Center(child: Text("Error loading comments"))
+            : commentState.comments != null && commentState.comments!.isNotEmpty
+            ? ListView.builder(
+                itemCount: commentState.comments!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final comment = comments[index];
+                  final comments = commentState.comments;
+                  final comment = comments![index];
                   print("name: ${comment.user.fullName}");
                   print("image: ${comment.user.id}");
                   return Row(
@@ -60,7 +62,8 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                     ],
                   );
                 },
-              ),
+              )
+            : Center(child: Text("No comments yet!")),
       ),
     );
   }

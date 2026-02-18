@@ -18,12 +18,12 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
 
   @override
   void initState() {
-    ref.read(CommunityViewModelProvider.notifier).getCommunityList();
+    ref.read(communityViewModelProvider.notifier).getCommunityList();
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
               scrollController.offset &&
           maxCommunites == false) {
-        ref.read(CommunityViewModelProvider.notifier).getCommunityList();
+        ref.read(communityViewModelProvider.notifier).getCommunityList();
       }
     });
 
@@ -38,7 +38,7 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
 
   @override
   Widget build(BuildContext context) {
-    final communityState = ref.watch(CommunityViewModelProvider);
+    final communityState = ref.watch(communityViewModelProvider);
     maxCommunites = communityState.maxFetched;
 
     return Scaffold(

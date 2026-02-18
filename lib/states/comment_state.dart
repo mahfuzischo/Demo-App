@@ -1,4 +1,5 @@
 import 'package:demo_app/models/comment_model.dart';
+import 'package:flutter/material.dart';
 
 class CommentState {
   final List<CommentModel>? comments;
@@ -12,6 +13,7 @@ class CommentState {
     bool? loadingState,
     String? err,
   }) {
+    debugPrint("Loading state updating from copywith");
     return CommentState(
       comments: commentList ?? comments,
       isLoading: loadingState ?? isLoading,

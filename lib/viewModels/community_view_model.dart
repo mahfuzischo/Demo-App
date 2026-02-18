@@ -61,7 +61,7 @@ class CommunityViewModel extends Notifier<CommunityState> {
   }
 }
 
-final CommunityViewModelProvider =
+final communityViewModelProvider =
     NotifierProvider<CommunityViewModel, CommunityState>(() {
       return CommunityViewModel();
     });

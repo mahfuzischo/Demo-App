@@ -11,7 +11,7 @@ class CommentRepo {
   final SecureStorage _storage = SecureStorage();
   Future<List<CommentModel>> getComments(int feedId) async {
     debugPrint("fetcing comments");
-    final String endpoint = '/student/comment/getComment/${{feedId}}';
+    final String endpoint = '/student/comment/getComment/$feedId';
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await _storage.readToken();
 
