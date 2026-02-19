@@ -1,7 +1,9 @@
 import 'package:demo_app/models/channel_model.dart';
 import 'package:demo_app/models/feed_model.dart';
+import 'package:demo_app/repositories/comment_repo.dart';
 import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
+import 'package:demo_app/viewModels/comment_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/views/post_view.dart';
 import 'package:demo_app/views/widgets/comment_widget.dart';
@@ -234,7 +236,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                             Feedpopupbutton(
                                               feedId: feed.feedId,
                                               communityId: widget.communityId,
-                                              channelId: selectedChannel!.id,
+                                              channelId: feed.channelId,
                                             ),
                                           ],
                                         ),
@@ -349,9 +351,15 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                           //comment section
                                           GestureDetector(
                                             onTap: () {
-                                              print(
-                                                "feedId in feedView: ${feed.feedId}",
-                                              );
+                                              // ref
+                                              //     .read(
+                                              //       commentViewModelProvider
+                                              //           .notifier,
+                                              //     )
+                                              //     .getComments(feed.feedId);
+                                              // print(
+                                              //   "feedId in feedView: ${feed.feedId}",
+                                              // );
                                               showBottomSheet(
                                                 context: context,
                                                 builder:
