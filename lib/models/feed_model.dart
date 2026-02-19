@@ -8,6 +8,7 @@ class FeedModel {
   final String pic;
   final DateTime createdAt;
   final List<FeedFileModel> files;
+  final int likeCount;
 
   FeedModel({
     required this.feedId,
@@ -19,6 +20,7 @@ class FeedModel {
     required this.feedTxt,
     required this.pic,
     required this.files,
+    required this.likeCount,
   });
 
   factory FeedModel.fromJSON(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class FeedModel {
       name: json["name"],
       createdAt: DateTime.parse(json["created_at"]),
       feedTxt: json["feed_txt"],
+      likeCount: json["like_count"],
       pic: json["pic"],
       files: (json["files"] as List<dynamic>)
           .map((f) => FeedFileModel.fromJSON(f))

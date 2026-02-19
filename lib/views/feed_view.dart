@@ -366,6 +366,8 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                                     (BuildContext context) {
                                                       return CommentWidget(
                                                         feedId: feed.feedId,
+                                                        likeCount:
+                                                            feed.likeCount,
                                                       );
                                                     },
                                               );

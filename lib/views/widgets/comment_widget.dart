@@ -4,8 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CommentWidget extends ConsumerStatefulWidget {
   final int feedId;
+  final int likeCount;
 
-  const CommentWidget({super.key, required this.feedId});
+  const CommentWidget({
+    super.key,
+    required this.feedId,
+    required this.likeCount,
+  });
 
   @override
   ConsumerState<CommentWidget> createState() => _CommentWidgetState();
@@ -45,11 +50,25 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                     decoration: BoxDecoration(
                       border: BoxBorder.fromLTRB(bottom: BorderSide(width: .5)),
                     ),
-                    child: Row(children: [Icon(Icons.thumb_up_off_alt)]),
+                    child: Row(
+                      children: [
+                        Icon(Icons.thumb_up_off_alt),
+                        SizedBox(width: 5),
+                        Text(
+                          "0 reactions",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey.shade700,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
 
                   Expanded(
                     child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: commentState.comments!.length,
                       itemBuilder: (BuildContext context, int index) {
                         final comments = commentState.comments;
