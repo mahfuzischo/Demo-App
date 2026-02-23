@@ -80,6 +80,7 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                             horizontal: 10,
                           ),
                           child: Row(
+                            crossAxisAlignment: .start,
                             mainAxisAlignment: .start,
                             children: [
                               CircleAvatar(
@@ -88,27 +89,66 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                                 ),
                               ),
                               SizedBox(width: 10),
-                              Container(
-                                // width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey.shade200,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: .start,
-                                    children: [
-                                      Text(
-                                        comment.user.fullName,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                              Column(
+                                crossAxisAlignment: .start,
+                                children: [
+                                  Container(
+                                    // width: double.infinity,
+                                    width:
+                                        MediaQuery.of(context).size.width * .8,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade200,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: .start,
+                                        children: [
+                                          Text(
+                                            comment.user.fullName,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(comment.commentTxt),
+                                        ],
                                       ),
-                                      Text(comment.commentTxt),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                    child: Row(
+                                      spacing: 8,
+                                      children: [
+                                        Text(
+                                          "7mo",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Like",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Reply",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
