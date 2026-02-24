@@ -29,9 +29,37 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
+    return Column(
+      children: [
+        Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            ),
+            VideoProgressIndicator(
+              _controller,
+              allowScrubbing: true,
+              colors: VideoProgressColors(
+                playedColor: Color.fromARGB(255, 15, 156, 221),
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          onPressed: () async {
+            if (_controller.value.isPlaying) {
+              await _controller.pause();
+            } else {
+              await _controller.play();
+            }
+          },
+          icon: _controller.value.isPlaying
+              ? Icon(Icons.play_arrow_rounded)
+              : Icon(Icons.pause),
+        ),
+      ],
     );
   }
 }
