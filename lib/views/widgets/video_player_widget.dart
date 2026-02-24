@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPlayer extends StatefulWidget {
+class VideoPlayerWidget extends StatefulWidget {
   final String videoURL;
-  const VideoPlayer({super.key, required this.videoURL});
+  const VideoPlayerWidget({super.key, required this.videoURL});
 
   @override
-  State<VideoPlayer> createState() => _VideoPlayerState();
+  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
 }
 
-class _VideoPlayerState extends State<VideoPlayer> {
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
 
   @override
@@ -31,7 +31,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(videoURL: ,),
+      child: VideoPlayer(_controller),
     );
   }
 }

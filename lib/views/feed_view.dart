@@ -9,6 +9,7 @@ import 'package:demo_app/views/post_view.dart';
 import 'package:demo_app/views/widgets/comment_widget.dart';
 import 'package:demo_app/views/widgets/community_drawer.dart';
 import 'package:demo_app/views/widgets/feedPopupButton.dart';
+import 'package:demo_app/views/widgets/video_player_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -257,26 +258,33 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                       ),
                                     ),
                                     if (feed.files.isNotEmpty) ...[
+                                      //file section start
                                       if (feed.files.length == 1)
-                                        //has single image
+                                        //has single image/video
                                         Padding(
                                           padding: EdgeInsets.symmetric(
                                             vertical: 5,
                                           ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadiusGeometry.circular(
-                                                  5,
+                                          child:
+                                              feed.files.first.type == "image"
+                                              ? ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadiusGeometry.circular(
+                                                        5,
+                                                      ),
+                                                  child: Image(
+                                                    image: NetworkImage(
+                                                      feed.files.first.fileLoc,
+                                                    ),
+                                                    height: 200,
+                                                    width: double.infinity,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )
+                                              : VideoPlayerWidget(
+                                                  videoURL:
+                                                      feed.files.first.hlsLink,
                                                 ),
-                                            child: Image(
-                                              image: NetworkImage(
-                                                feed.files.first.fileLocation,
-                                              ),
-                                              height: 200,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
                                         )
                                       else
                                         Expanded(
@@ -307,7 +315,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                                       image: NetworkImage(
                                                         feed
                                                             .files[fileIndex]
-                                                            .fileLocation,
+                                                            .fileLoc,
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),
@@ -315,6 +323,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                                 },
                                           ),
                                         ),
+                                      //image section end
                                     ],
                                     //like-comment section
                                     Padding(

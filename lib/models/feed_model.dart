@@ -42,9 +42,50 @@ class FeedModel {
 }
 
 class FeedFileModel {
-  final String fileLocation;
-  FeedFileModel({required this.fileLocation});
+  final String fileLoc;
+  final String originalName;
+  final String hlsLink;
+  final String playLink;
+  final String extname;
+  final String type;
+  final int size;
+  final String thumbnailLink;
+  final String videoID;
+  final bool isNew;
+
+  FeedFileModel({
+    required this.fileLoc,
+    required this.originalName,
+    required this.hlsLink,
+    required this.playLink,
+    required this.extname,
+    required this.type,
+    required this.size,
+    required this.thumbnailLink,
+    required this.videoID,
+    required this.isNew,
+  });
+
   factory FeedFileModel.fromJSON(Map<String, dynamic> json) {
-    return FeedFileModel(fileLocation: json['fileLoc']);
+    return FeedFileModel(
+      fileLoc: json['fileLoc'] ?? '',
+      originalName: json['originalName'] ?? '',
+      hlsLink: json['hls_link'] ?? '',
+      playLink: json['play_link'] ?? '',
+      extname: json['extname'] ?? '',
+      type: json['type'] ?? '',
+      size: json['size'] ?? 0,
+      thumbnailLink: json['thumbnail_link'] ?? '',
+      videoID: json['videoID'] ?? '',
+      isNew: json['isNew'] ?? false,
+    );
   }
 }
+
+// class FeedFileModel {
+//   final String fileLocation;
+//   FeedFileModel({required this.fileLocation});
+//   factory FeedFileModel.fromJSON(Map<String, dynamic> json) {
+//     return FeedFileModel(fileLocation: json['fileLoc']);
+//   }
+// }
