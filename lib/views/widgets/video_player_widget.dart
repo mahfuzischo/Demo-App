@@ -55,9 +55,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               await _controller.play();
             }
           },
-          icon: _controller.value.isPlaying
-              ? Icon(Icons.play_arrow_rounded)
-              : Icon(Icons.pause),
+          icon: Icon(
+            _controller.value.isPlaying
+                ? Icons.pause_circle
+                : Icons.play_arrow_rounded,
+          ),
         ),
       ],
     );
