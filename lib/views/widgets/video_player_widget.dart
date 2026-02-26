@@ -47,19 +47,47 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
           ],
         ),
-        IconButton(
-          onPressed: () async {
-            if (_controller.value.isPlaying) {
-              await _controller.pause();
-            } else {
-              await _controller.play();
-            }
-          },
-          icon: Icon(
-            _controller.value.isPlaying
-                ? Icons.pause_circle
-                : Icons.play_arrow_rounded,
-          ),
+        Row(
+          mainAxisAlignment: .spaceAround,
+          children: [
+            //seek backward
+            IconButton(
+              onPressed: () async {
+                Duration currentDuration = _controller.value.position;
+                await _controller.seekTo(
+                  currentDuration - Duration(seconds: 10),
+                );
+              },
+              icon: Icon(Icons.replay_10),
+            ),
+            //play/pause
+            IconButton(
+              onPressed: () async {
+                if (_controller.value.isPlaying) {
+                  debugPrint("Playing? : ${_controller.value.isPlaying}");
+                  await _controller.pause();
+                  debugPrint("Playing? : ${_controller.value.isPlaying}");
+                } else {
+                  await _controller.play();
+                }
+              },
+              icon: Icon(
+                _controller.value.isPlaying
+                    ? Icons.pause_circle
+                    : Icons.play_arrow_rounded,
+              ),
+            ),
+            //seek forward
+            IconButton(
+              onPressed: () async {
+                Duration currentDuration = _controller.value.position;
+                await _controller.seekTo(
+                  currentDuration + Duration(seconds: 10),
+                );
+              },
+              icon: Icon(Icons.forward_10),
+            ),
+          ],
         ),
       ],
     );

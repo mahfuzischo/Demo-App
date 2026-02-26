@@ -17,6 +17,8 @@ class CommentWidget extends ConsumerStatefulWidget {
 }
 
 class _CommentWidgetState extends ConsumerState<CommentWidget> {
+  TextEditingController commentController = TextEditingController();
+
   @override
   void initState() {
     Future.microtask(() {
@@ -154,6 +156,57 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                           ),
                         );
                       },
+                    ),
+                  ),
+
+                  // Comment text field // Create comment
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 30),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: BoxBorder.fromLTRB(top: BorderSide(width: .5)),
+                    ),
+                    child: Row(
+                      spacing: 10,
+                      children: [
+                        // CircleAvatar(backgroundImage: NetworkImage(''),),
+                        CircleAvatar(
+                          backgroundImage: AssetImage(
+                            "assets/blank_profile.png",
+                          ),
+                        ),
+
+                        Expanded(
+                          child: TextField(
+                            controller: commentController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Write a comment...",
+                            ),
+                          ),
+                        ),
+
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.photo_camera),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.image),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.video_collection),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.gif_box_outlined),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
