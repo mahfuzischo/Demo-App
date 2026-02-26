@@ -164,28 +164,38 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 30),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      border: BoxBorder.fromLTRB(top: BorderSide(width: .5)),
+                      border: Border(top: BorderSide(width: .5)),
                     ),
-                    child: Row(
-                      spacing: 10,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // CircleAvatar(backgroundImage: NetworkImage(''),),
-                        CircleAvatar(
-                          backgroundImage: AssetImage(
-                            "assets/blank_profile.png",
-                          ),
-                        ),
-
-                        Expanded(
-                          child: TextField(
-                            controller: commentController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Write a comment...",
+                        // Avatar
+                        Row(
+                          crossAxisAlignment: .start,
+                          spacing: 10,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: AssetImage(
+                                "assets/blank_profile.png",
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 10),
+
+                            Expanded(
+                              child: TextField(
+                                controller: commentController,
+                                maxLines: 2,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Write a comment...",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
 
+                        // Buttons row
                         Row(
                           children: [
                             IconButton(
@@ -203,6 +213,11 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                             IconButton(
                               onPressed: () {},
                               icon: Icon(Icons.gif_box_outlined),
+                            ),
+                            Spacer(), // Push send button to right
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.send, color: Colors.blue),
                             ),
                           ],
                         ),

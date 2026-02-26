@@ -24,6 +24,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
