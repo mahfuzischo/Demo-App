@@ -57,7 +57,7 @@ class _PostViewState extends ConsumerState<PostView> {
             onPressed: () async {
               PostModel dummyPost = PostModel(
                 communityId: widget.communityId,
-                spaceId: widget.spaceId, // replace with real space ID
+                spaceId: widget.spaceId,
                 feedTxt: feedTxtController.text,
                 uploadType: "photos",
                 isBackground: 0,

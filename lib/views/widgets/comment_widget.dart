@@ -18,12 +18,29 @@ class CommentWidget extends ConsumerStatefulWidget {
 
 class _CommentWidgetState extends ConsumerState<CommentWidget> {
   TextEditingController commentController = TextEditingController();
+  final FocusNode commentFocusNode = FocusNode();
+  bool isFocused = false;
+  bool hasText = false;
 
   @override
   void initState() {
     Future.microtask(() {
       ref.read(commentViewModelProvider.notifier).getComments(widget.feedId);
     });
+
+    commentFocusNode.addListener(() {
+      setState(() {
+        isFocused = commentFocusNode.hasFocus;
+        debugPrint("Input focus::::::::::::::::::::::: ${isFocused}");
+      });
+    });
+
+    commentController.addListener(() {
+      setState(() {
+        hasText = commentController.value.text.isNotEmpty;
+      });
+    });
+
     super.initState();
   }
 
@@ -185,6 +202,7 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                             Expanded(
                               child: TextField(
                                 controller: commentController,
+                                focusNode: commentFocusNode,
                                 maxLines: 2,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -196,31 +214,55 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                         ),
 
                         // Buttons row
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.photo_camera),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.image),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.video_collection),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.gif_box_outlined),
-                            ),
-                            Spacer(), // Push send button to right
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.send, color: Colors.blue),
-                            ),
-                          ],
-                        ),
+                        isFocused
+                            ? Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.photo_camera,
+                                      color: Color.fromRGBO(7, 81, 91, 1.0),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.image,
+                                      color: Color.fromRGBO(7, 81, 91, 1.0),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.video_collection,
+                                      color: Color.fromRGBO(7, 81, 91, 1.0),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.gif_box_outlined,
+                                      color: Color.fromRGBO(7, 81, 91, 1.0),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  hasText
+                                      ? IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.send,
+                                            color: Color.fromRGBO(
+                                              7,
+                                              81,
+                                              91,
+                                              1.0,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),
