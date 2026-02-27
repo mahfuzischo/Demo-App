@@ -168,12 +168,12 @@ class ItemMetaModel {
       originalName: json['original_name'] ?? '',
       fileType: json['file_type'] ?? '',
       // Video
-      playLink: json['play_link'],
+      playLink: json['play_link'] ?? "",
       hlsLink: json['hls_link'],
-      thumbnailLink: json['thumbnail_link'],
-      webpLink: json['webp_link'],
-      videoID: json['videoID'],
-      length: json['length'],
+      thumbnailLink: json['thumbnail_link'] ?? "",
+      webpLink: json['webp_link'] ?? "",
+      videoID: json['videoID'] ?? "",
+      length: json['length'] ?? 0,
       size: json['size'],
       extname: json['extname'],
       isNew: json['isNew'],
@@ -182,8 +182,8 @@ class ItemMetaModel {
     );
   }
 
-  // bool get isVideo => fileType == 'video';
-  // bool get isImage => fileType == 'image';
+  bool get isVideo => fileType == 'video';
+  bool get isImage => fileType == 'image';
 
   // String? get url => isVideo ? (thumbnailLink ?? playLink) : fileLink;
   // String? get videoUrl => hlsLink ?? playLink;
