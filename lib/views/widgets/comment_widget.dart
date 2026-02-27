@@ -1,4 +1,5 @@
 import 'package:demo_app/viewModels/comment_view_model.dart';
+import 'package:demo_app/views/widgets/gallery_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,6 +43,11 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -225,14 +231,35 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return GalleryWidget(
+                                            galleryFileType: "image",
+                                          );
+                                        },
+                                      );
+
+                                      debugPrint("Fetching gallery images");
+                                    },
                                     icon: Icon(
                                       Icons.image,
                                       color: Color.fromRGBO(7, 81, 91, 1.0),
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return GalleryWidget(
+                                            galleryFileType: "video",
+                                          );
+                                        },
+                                      );
+                                      debugPrint("Fetching gallery videos");
+                                    },
                                     icon: Icon(
                                       Icons.video_collection,
                                       color: Color.fromRGBO(7, 81, 91, 1.0),
