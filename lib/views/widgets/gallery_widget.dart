@@ -98,6 +98,8 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                       itemCount: galleryState.galleryItems!.length,
                       itemBuilder: (BuildContext context, int index) {
                         final item = galleryState.galleryItems![index];
+                        print("Image link: ${item.meta.fileLink}");
+                        print("Thumbnail link: ${item.meta.thumbnailLink}");
                         return GestureDetector(
                           onTap: () {},
                           child: Container(
@@ -109,15 +111,40 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                             ),
                             child: Column(
                               children: [
-                                Image(
-                                  image: NetworkImage(
-                                    "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
-                                  ),
+                                Expanded(
+                                  flex: 4,
+                                  child: item.isImage
+                                      ? Image(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            item.meta.fileLink != null
+                                                ? item.meta.fileLink ??
+                                                      "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file"
+                                                : "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
+                                          ),
+                                        )
+                                      : item.isVideo
+                                      ? Image(
+                                          image: NetworkImage(
+                                            item.meta.thumbnailLink != null
+                                                ? item.meta.thumbnailLink ??
+                                                      "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file"
+                                                : "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
+                                          ),
+                                        )
+                                      : Image(
+                                          image: NetworkImage(
+                                            "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
+                                          ),
+                                        ),
                                 ),
-                                Container(
-                                  height: 40,
-                                  color: Color.fromRGBO(7, 81, 91, .8),
-                                  child: Text(item.originalName),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    height: 40,
+                                    color: Color.fromRGBO(7, 81, 91, .8),
+                                    child: Text(item.originalName),
+                                  ),
                                 ),
                               ],
                             ),
