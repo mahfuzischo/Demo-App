@@ -1,5 +1,6 @@
 import 'package:demo_app/viewModels/comment_view_model.dart';
 import 'package:demo_app/views/widgets/gallery_widget.dart';
+import 'package:demo_app/views/widgets/reply_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,6 +49,19 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String getTimeAgo(DateTime date) {
+    final difference = DateTime.now().difference(date);
+    if (difference.inDays > 0) {
+      return "${difference.inDays} days ago";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} hours ago";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes} minutes ago";
+    } else {
+      return "Just Now";
+    }
   }
 
   @override
@@ -147,7 +161,7 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                                       spacing: 8,
                                       children: [
                                         Text(
-                                          "7mo",
+                                          getTimeAgo(comment.createdAt),
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 12,
@@ -155,19 +169,36 @@ class _CommentWidgetState extends ConsumerState<CommentWidget> {
                                           ),
                                         ),
                                         Text(
-                                          "Like",
+                                          comment.likeCount == 0
+                                              ? "Like"
+                                              : "${comment.likeCount} ${comment.likeCount == 1 ? "Like" : "Likes"}",
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
-                                        Text(
-                                          "Reply",
-                                          style: TextStyle(
-                                            color: Colors.grey.shade700,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
+                                        GestureDetector(
+                                          onTap: () {
+                                            showBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ReplyWidget(
+                                                  commentId: comment.id,
+                                                  likeCount: comment.likeCount,
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            comment.replyCount == 0
+                                                ? "Reply"
+                                                : "${comment.replyCount} ${comment.replyCount == 1 ? "Reply" : "Replies"}",
+                                            style: TextStyle(
+                                              color: Colors.grey.shade700,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ),
                                       ],

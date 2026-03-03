@@ -18,7 +18,7 @@ class ReplyWidget extends ConsumerStatefulWidget {
 }
 
 class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
-  TextEditingController commentController = TextEditingController();
+  TextEditingController replyController = TextEditingController();
   final FocusNode commentFocusNode = FocusNode();
   bool isFocused = false;
   bool hasText = false;
@@ -36,9 +36,9 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
       });
     });
 
-    commentController.addListener(() {
+    replyController.addListener(() {
       setState(() {
-        hasText = commentController.value.text.isNotEmpty;
+        hasText = replyController.value.text.isNotEmpty;
       });
     });
 
@@ -48,6 +48,19 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String getTimeAgo(DateTime date) {
+    final difference = DateTime.now().difference(date);
+    if (difference.inDays > 0) {
+      return "${difference.inDays} days ago";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} hours ago";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes} minutes ago";
+    } else {
+      return "Just Now";
+    }
   }
 
   @override
@@ -147,7 +160,7 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
                                       spacing: 8,
                                       children: [
                                         Text(
-                                          "7mo",
+                                          getTimeAgo(reply.createdAt),
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 12,
@@ -155,7 +168,9 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
                                           ),
                                         ),
                                         Text(
-                                          "Like",
+                                          reply.likeCount == 0
+                                              ? "Like"
+                                              : "${reply.likeCount} ${reply.likeCount == 1 ? "Like" : "Likes"}",
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 12,
@@ -199,12 +214,12 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
 
                             Expanded(
                               child: TextField(
-                                controller: commentController,
+                                controller: replyController,
                                 focusNode: commentFocusNode,
                                 maxLines: 2,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Write a comment...",
+                                  hintText: "Write a reply...",
                                 ),
                               ),
                             ),
@@ -287,7 +302,7 @@ class _ReplyWidgetState extends ConsumerState<ReplyWidget> {
                   ),
                 ],
               )
-            : Center(child: Text("No comments yet!")),
+            : Center(child: Text("No replies yet!")),
       ),
     );
   }

@@ -49,7 +49,7 @@ class ReplyModel {
       userId: json['user_id'],
       replyCount: json['reply_count'],
       likeCount: json['like_count'],
-      replyTxt: json['reply_txt'],
+      replyTxt: json['comment_txt'],
       parentId: json['parent_id'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
