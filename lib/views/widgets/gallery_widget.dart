@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:demo_app/viewModels/gallery_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class GalleryWidget extends ConsumerStatefulWidget {
   final String galleryFileType;
@@ -12,6 +15,9 @@ class GalleryWidget extends ConsumerStatefulWidget {
 }
 
 class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
+  File? selectedImage;
+  File? selectedVideo;
+
   @override
   void initState() {
     Future.microtask(() {
@@ -21,6 +27,16 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
     });
 
     super.initState();
+  }
+
+  Future pickImage() async {
+    final imagePicked = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (imagePicked == null) return;
+    setState(() {
+      selectedImage = File(imagePicked.path);
+    });
   }
 
   @override
@@ -72,7 +88,14 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await pickImage();
+                        if (selectedImage != null) {
+                          ref
+                              .read(galleryViewModelProvider.notifier)
+                              .uploadToGallery(selectedImage!.path, 'image');
+                        }
+                      },
                       child: Row(
                         spacing: 5,
                         mainAxisAlignment: .center,

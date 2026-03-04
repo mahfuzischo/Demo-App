@@ -47,6 +47,34 @@ class GalleryViewModel extends Notifier<GalleryState> {
     }
   }
 
+  Future<void> uploadToGallery(String filePath, String fileType) async {
+    final endpoint = '/teacher/gallery/uploadFile';
+    final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
+    final token = await storage.readToken();
+    state = state.copyWith(loadingState: true);
+    final request = http.MultipartRequest('POST', url);
+
+    request.headers['Authorization'] = 'Bearer $token';
+
+    request.files.add(await http.MultipartFile.fromPath(fileType, filePath));
+
+    final streamedResponse = await request.send();
+
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      state = state.copyWith(loadingState: false, err: null);
+
+      debugPrint('File uploaded successfully.');
+    } else {
+      state = state.copyWith(
+        loadingState: false,
+        err: 'Failed to create post. Status code: ${response.statusCode}',
+      );
+      debugPrint('Failed to create post. Status code: ${response.statusCode}');
+    }
+  }
+
   void clearGallery() {
     state = state.copyWith(itemList: null);
   }
