@@ -65,7 +65,7 @@ class GalleryViewModel extends Notifier<GalleryState> {
     if (response.statusCode == 200) {
       state = state.copyWith(loadingState: false, err: null);
 
-      debugPrint('File uploaded successfully.');
+      debugPrint('File uploaded successfully');
     } else {
       state = state.copyWith(
         loadingState: false,

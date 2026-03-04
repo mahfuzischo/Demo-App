@@ -17,6 +17,7 @@ class GalleryWidget extends ConsumerStatefulWidget {
 class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
   File? selectedImage;
   File? selectedVideo;
+  String noImageURL = 'assets/No_Image_Available.jpg';
 
   @override
   void initState() {
@@ -93,7 +94,7 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                         if (selectedImage != null) {
                           ref
                               .read(galleryViewModelProvider.notifier)
-                              .uploadToGallery(selectedImage!.path, 'image');
+                              .uploadToGallery(selectedImage!.path, 'file');
                         }
                       },
                       child: Row(
@@ -136,30 +137,32 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                               children: [
                                 Expanded(
                                   flex: 4,
-                                  child: item.isImage
-                                      ? Image(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            item.meta.fileLink != null
-                                                ? item.meta.fileLink ??
-                                                      "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file"
-                                                : "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
-                                          ),
-                                        )
-                                      : item.isVideo
-                                      ? Image(
-                                          image: NetworkImage(
-                                            item.meta.thumbnailLink != null
-                                                ? item.meta.thumbnailLink ??
-                                                      "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file"
-                                                : "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
-                                          ),
-                                        )
-                                      : Image(
-                                          image: NetworkImage(
-                                            "https://www.freepik.com/free-vector/folder-with-warning_357319599.htm#fromView=search&page=1&position=5&uuid=dc91d282-34f7-4aed-9a03-3d9b18925572&query=no+file",
-                                          ),
-                                        ),
+                                  child: Image(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      item.isImage
+                                          ? (item.meta.fileLink?.isNotEmpty ==
+                                                    true
+                                                ? item.meta.fileLink!
+                                                : noImageURL)
+                                          : item.isVideo
+                                          ? (item
+                                                        .meta
+                                                        .thumbnailLink
+                                                        ?.isNotEmpty ==
+                                                    true
+                                                ? item.meta.thumbnailLink!
+                                                : item.meta.fileLink != null &&
+                                                      item
+                                                              .meta
+                                                              .fileLink
+                                                              ?.isNotEmpty ==
+                                                          true
+                                                ? item.meta.fileLink!
+                                                : noImageURL)
+                                          : noImageURL,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 1,
