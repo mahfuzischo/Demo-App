@@ -1,18 +1,20 @@
 import 'dart:convert';
 
 import 'package:demo_app/data/secure_storage.dart';
+import 'package:demo_app/models/auth_model.dart';
 import 'package:demo_app/models/user_model.dart';
+import 'package:demo_app/states/auth_state.dart';
 import 'package:demo_app/states/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-class AuthenticationViewModel extends Notifier<UserState> {
+class AuthenticationViewModel extends Notifier<AuthState> {
   @override
-  UserState build() {
+  AuthState build() {
     getToken();
-    return UserState();
+    return AuthState();
   }
 
   SecureStorage storage = SecureStorage();
@@ -37,12 +39,12 @@ class AuthenticationViewModel extends Notifier<UserState> {
       // storage.writeToken(token) // need to add code to remember credentials in the login screen
       final data = jsonDecode(response.body);
       await storage.writeToken(data['token']);
-      final userData = UserModel(
+      final userData = AuthModel(
         email: email,
         password: password,
         token: data['token'],
       );
-      state = state.copyWith(tempUser: userData, authenticated: true);
+      state = state.copyWith(authData: userData, authenticated: true);
     } else {
       debugPrint("Login failed with status code: ${response.statusCode}");
     }
@@ -55,6 +57,6 @@ class AuthenticationViewModel extends Notifier<UserState> {
 }
 
 final authenticationViewModelProvider =
-    NotifierProvider<AuthenticationViewModel, UserState>(() {
+    NotifierProvider<AuthenticationViewModel, AuthState>(() {
       return AuthenticationViewModel();
     });

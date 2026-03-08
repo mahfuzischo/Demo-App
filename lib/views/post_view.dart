@@ -25,6 +25,16 @@ class _PostViewState extends ConsumerState<PostView> {
     Colors.red,
     Colors.blue,
   ];
+
+  List<Map<String, dynamic>> postOptions = [
+    {"icon": Icon(Icons.photo), "label": "Photo Gallery"},
+    {"icon": Icon(Icons.videocam), "label": "Video Gallery"},
+    {"icon": Icon(Icons.camera_alt), "label": "Capture Photo"},
+    {"icon": Icon(Icons.videocam_rounded), "label": "Capture Video"},
+    {"icon": Icon(Icons.attach_file), "label": "File"},
+    {"icon": Icon(Icons.poll), "label": "Poll"},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final postViewData = ref.watch(PostViewModelProvider);
@@ -121,13 +131,13 @@ class _PostViewState extends ConsumerState<PostView> {
               Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 2),
+                  border: Border.all(color: Colors.grey.shade300, width: 2),
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
 
                 child: TextField(
-                  maxLines: 4,
+                  maxLines: 5,
                   controller: feedTxtController,
                   decoration: InputDecoration(
                     hintText: 'What\'s on your mind?',
@@ -137,7 +147,7 @@ class _PostViewState extends ConsumerState<PostView> {
               ),
               SizedBox(height: 20),
               SizedBox(
-                height: 30,
+                height: 35,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: colors.length,
@@ -146,11 +156,12 @@ class _PostViewState extends ConsumerState<PostView> {
                       padding: EdgeInsetsGeometry.all(5),
                       child: GestureDetector(
                         child: Container(
-                          width: 20,
-                          constraints: BoxConstraints(maxHeight: 20),
+                          width: 25,
+
+                          constraints: BoxConstraints(maxHeight: 25),
                           decoration: BoxDecoration(
                             color: colors[index],
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
@@ -158,63 +169,41 @@ class _PostViewState extends ConsumerState<PostView> {
                   },
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.photo),
-                          onPressed: () {
-                            // photo upload
-                          },
-                        ),
-                        Text("Photo"),
-                      ],
-                    ),
+              SizedBox(height: 50),
+              Expanded(
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 5,
+                    childAspectRatio: 0.9,
+                    mainAxisExtent: 50,
                   ),
-                  Container(
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.videocam),
-                          onPressed: () {
-                            // video upload
-                          },
-                        ),
-                        Text("Video"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: () {
-                            // video upload
-                          },
-                        ),
-                        Text("Capture Photo"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: IconButton(
-                      icon: Icon(Icons.videocam),
-                      onPressed: () {
-                        //capture video
+                  itemCount: postOptions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        debugPrint(
+                          "${postOptions[index]["label"]} button pressed ",
+                        );
                       },
-                    ),
-                  ),
-                ],
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: postOptions[index]["icon"],
+                            ),
+                            Text(postOptions[index]["label"]),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
