@@ -5,6 +5,7 @@ import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
 import 'package:demo_app/viewModels/comment_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
+import 'package:demo_app/viewModels/user_view_model.dart';
 import 'package:demo_app/views/post_view.dart';
 import 'package:demo_app/views/widgets/comment_widget.dart';
 import 'package:demo_app/views/widgets/community_drawer.dart';
@@ -32,6 +33,10 @@ class _FeedViewState extends ConsumerState<FeedView> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(userViewModelProvider.notifier).getUser();
+    });
+
     ref
         .read(channelViewModelProvider.notifier)
         .getChannelList(widget.communityId);
@@ -76,6 +81,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
     }
 
     final feeds = ref.watch(feedViewModelProvider).feeds;
+    final user = ref.watch(userViewModelProvider).user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(7, 81, 91, 1.0),
@@ -150,7 +156,7 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                   mainAxisAlignment: .spaceBetween,
 
                                   children: [
-                                    Image.asset("assets/blank_profile.png"),
+                                    Image.network(user!.profilePic),
                                     Text(
                                       'What\'s on your mind...',
                                       style: TextStyle(color: Colors.grey[600]),
