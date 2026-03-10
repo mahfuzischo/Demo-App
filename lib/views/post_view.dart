@@ -3,9 +3,7 @@ import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/viewModels/post_view_model.dart';
 import 'package:demo_app/viewModels/user_view_model.dart';
 import 'package:demo_app/views/widgets/gallery_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostView extends ConsumerStatefulWidget {

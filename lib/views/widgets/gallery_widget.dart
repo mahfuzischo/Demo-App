@@ -125,8 +125,11 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                         final item = galleryState.galleryItems![index];
                         print("Image link: ${item.meta.fileLink}");
                         print("Thumbnail link: ${item.meta.thumbnailLink}");
+
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            print("data ext: ${item.meta.extname}");
+                          },
                           child: Container(
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
