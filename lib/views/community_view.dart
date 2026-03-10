@@ -1,6 +1,6 @@
 import 'package:demo_app/viewModels/community_view_model.dart';
+import 'package:demo_app/viewModels/user_view_model.dart';
 import 'package:demo_app/views/feed_view.dart';
-import 'package:demo_app/views/feed_view_v2.dart';
 import 'package:demo_app/views/widgets/cardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +19,10 @@ class _CommunityViewState extends ConsumerState<CommunityView> {
   @override
   void initState() {
     ref.read(communityViewModelProvider.notifier).getCommunityList();
+    Future.microtask(() {
+      ref.read(userViewModelProvider.notifier).getUser();
+    });
+
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
               scrollController.offset &&

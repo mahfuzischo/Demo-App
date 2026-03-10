@@ -1,6 +1,8 @@
 import 'package:demo_app/models/post_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/viewModels/post_view_model.dart';
+import 'package:demo_app/viewModels/user_view_model.dart';
+import 'package:demo_app/views/widgets/gallery_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -38,6 +40,7 @@ class _PostViewState extends ConsumerState<PostView> {
   @override
   Widget build(BuildContext context) {
     final postViewData = ref.watch(PostViewModelProvider);
+    final userData = ref.watch(userViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.black,
@@ -118,11 +121,11 @@ class _PostViewState extends ConsumerState<PostView> {
                 mainAxisAlignment: .start,
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/blank_profile.png'),
+                    backgroundImage: NetworkImage(userData.user!.profilePic),
                   ),
                   SizedBox(width: 8),
                   Text(
-                    'John Snow',
+                    userData.user!.fullName,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
                 ],
@@ -184,6 +187,20 @@ class _PostViewState extends ConsumerState<PostView> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+                        showBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return // Example: Displaying an icon based on enum status
+                            switch (index) {
+                              0 => GalleryWidget(galleryFileType: "image"),
+                              1 => GalleryWidget(galleryFileType: "video"),
+                              2 => GalleryWidget(galleryFileType: "image"),
+                              3 => GalleryWidget(galleryFileType: "image"),
+                              _ => GalleryWidget(galleryFileType: "image"),
+                            };
+                          },
+                        );
+
                         debugPrint(
                           "${postOptions[index]["label"]} button pressed ",
                         );

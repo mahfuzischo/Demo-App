@@ -1,9 +1,7 @@
 import 'package:demo_app/models/channel_model.dart';
 import 'package:demo_app/models/feed_model.dart';
-import 'package:demo_app/repositories/comment_repo.dart';
 import 'package:demo_app/states/channel_state.dart';
 import 'package:demo_app/viewModels/channel_view_model.dart';
-import 'package:demo_app/viewModels/comment_view_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/viewModels/user_view_model.dart';
 import 'package:demo_app/views/post_view.dart';

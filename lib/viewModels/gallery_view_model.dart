@@ -18,7 +18,7 @@ class GalleryViewModel extends Notifier<GalleryState> {
 
   Future<void> fetchGallery(String galleryFileType) async {
     final String endpoint =
-        "/teacher/gallery/getGalleryItemsFromLibary?type=${galleryFileType}&page&pageSize&parent_id=0&str";
+        "/teacher/gallery/getGalleryItemsFromLibary?type=$galleryFileType&page&pageSize&parent_id=0&str";
 
     final url = Uri.parse("${dotenv.env["base_url"]}$endpoint");
     final token = await storage.readToken();

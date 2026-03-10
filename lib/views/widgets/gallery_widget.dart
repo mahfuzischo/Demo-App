@@ -17,7 +17,8 @@ class GalleryWidget extends ConsumerStatefulWidget {
 class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
   File? selectedImage;
   File? selectedVideo;
-  String noImageURL = 'assets/No_Image_Available.jpg';
+  String noImageURL =
+      "https://ezycourse.b-cdn.net/2903/cmmk8hxsp3lmkh0qtadke6piz.png";
 
   @override
   void initState() {
@@ -127,6 +128,7 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                         return GestureDetector(
                           onTap: () {},
                           child: Container(
+                            clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
                               border: Border.all(width: 1, color: Colors.grey),
                               borderRadius: BorderRadius.all(
@@ -136,7 +138,7 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                             child: Column(
                               children: [
                                 Expanded(
-                                  flex: 4,
+                                  flex: 7,
                                   child: Image(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
@@ -147,29 +149,31 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                                                 : noImageURL)
                                           : item.isVideo
                                           ? (item
-                                                        .meta
-                                                        .thumbnailLink
-                                                        ?.isNotEmpty ==
-                                                    true
+                                                            .meta
+                                                            .thumbnailLink
+                                                            ?.isNotEmpty ==
+                                                        true &&
+                                                    item.meta.thumbnailLink !=
+                                                        null
                                                 ? item.meta.thumbnailLink!
-                                                : item.meta.fileLink != null &&
-                                                      item
-                                                              .meta
-                                                              .fileLink
-                                                              ?.isNotEmpty ==
-                                                          true
-                                                ? item.meta.fileLink!
                                                 : noImageURL)
                                           : noImageURL,
                                     ),
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Container(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                    width: double.infinity,
                                     height: 40,
                                     color: Color.fromRGBO(7, 81, 91, .8),
-                                    child: Text(item.originalName),
+                                    child: Text(
+                                      item.originalName.length > 19
+                                          ? "${item.originalName.substring(0, 19)}..."
+                                          : item.originalName,
+                                      style: TextStyle(),
+                                    ),
                                   ),
                                 ),
                               ],
