@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:demo_app/models/gallery_model.dart';
 import 'package:demo_app/viewModels/gallery_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,6 +16,7 @@ class GalleryWidget extends ConsumerStatefulWidget {
 }
 
 class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
+  List<GalleryItemModel> selectedFilesData = [];
   File? selectedImage;
   File? selectedVideo;
   String noImageURL =
@@ -39,6 +41,20 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
     setState(() {
       selectedImage = File(imagePicked.path);
     });
+  }
+
+  void toggleSelected(GalleryItemModel item) {
+    setState(() {
+      if (selectedFilesData.any((file) => file.id == item.id)) {
+        selectedFilesData.removeWhere((file) => file.id == item.id);
+      } else {
+        selectedFilesData.add(item);
+      }
+    });
+  }
+
+  bool isSelected(GalleryItemModel item) {
+    return selectedFilesData.any((file) => file.id == item.id);
   }
 
   @override
@@ -184,6 +200,27 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                           ),
                         );
                       },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(232, 245, 74, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color.fromRGBO(38, 105, 113, 1),
+                        ),
+                      ),
                     ),
                   ),
                 ],

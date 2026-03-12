@@ -1,3 +1,4 @@
+import 'package:demo_app/models/gallery_model.dart';
 import 'package:demo_app/models/post_model.dart';
 import 'package:demo_app/viewModels/feed_view_model.dart';
 import 'package:demo_app/viewModels/post_view_model.dart';
@@ -184,24 +185,51 @@ class _PostViewState extends ConsumerState<PostView> {
                   itemCount: postOptions.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () {
-                        showBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return // Example: Displaying an icon based on enum status
-                            switch (index) {
-                              0 => GalleryWidget(galleryFileType: "image"),
-                              1 => GalleryWidget(galleryFileType: "video"),
-                              2 => GalleryWidget(galleryFileType: "image"),
-                              3 => GalleryWidget(galleryFileType: "image"),
-                              _ => GalleryWidget(galleryFileType: "image"),
-                            };
-                          },
-                        );
+                      onTap: () async {
+                        final result =
+                            await showModalBottomSheet<List<GalleryItemModel>>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                // Example: Displaying an icon based on enum status
+                                switch (index) {
+                                  case 0:
+                                    return GalleryWidget(
+                                      galleryFileType: "image",
+                                    );
+                                  case 1:
+                                    return GalleryWidget(
+                                      galleryFileType: "video",
+                                    );
+                                  case 2:
+                                    return GalleryWidget(
+                                      galleryFileType: "image",
+                                    );
+                                  case 3:
+                                    return GalleryWidget(
+                                      galleryFileType: "image",
+                                    );
+                                  case 4:
+                                    return GalleryWidget(
+                                      galleryFileType: "image",
+                                    );
+                                  default:
+                                    return GalleryWidget(
+                                      galleryFileType: 'image',
+                                    );
+                                }
+                                ;
+                              },
+                            );
 
                         debugPrint(
                           "${postOptions[index]["label"]} button pressed ",
                         );
+
+                        if (result != null) {
+                          debugPrint("selected item count: ${result.length}");
+                        } else {
+                          debugPrint("no items selected");
+                        }
                       },
                       child: Container(
                         height: 50,
