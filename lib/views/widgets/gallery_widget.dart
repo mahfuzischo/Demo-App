@@ -139,17 +139,22 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                       itemCount: galleryState.galleryItems!.length,
                       itemBuilder: (BuildContext context, int index) {
                         final item = galleryState.galleryItems![index];
+                        bool selected = isSelected(item);
                         print("Image link: ${item.meta.fileLink}");
                         print("Thumbnail link: ${item.meta.thumbnailLink}");
 
                         return GestureDetector(
                           onTap: () {
                             print("data ext: ${item.meta.extname}");
+                            toggleSelected(item);
                           },
                           child: Container(
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
-                              border: Border.all(width: 1, color: Colors.grey),
+                              border: Border.all(
+                                width: 1,
+                                color: selected ? Colors.green : Colors.grey,
+                              ),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
