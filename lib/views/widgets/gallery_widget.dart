@@ -140,12 +140,18 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                       itemBuilder: (BuildContext context, int index) {
                         final item = galleryState.galleryItems![index];
                         bool selected = isSelected(item);
-                        print("Image link: ${item.meta.fileLink}");
-                        print("Thumbnail link: ${item.meta.thumbnailLink}");
+                        // print("Image link: ${item.meta.fileLink}");
+                        // print("Thumbnail link: ${item.meta.thumbnailLink}");
 
                         return GestureDetector(
                           onTap: () {
-                            print("data ext: ${item.meta.extname}");
+                            if (item.meta.extname == null) {
+                              print(
+                                "picked file extension name: ${item.originalName.split('.').last}",
+                              );
+                            } else {
+                              print('extname: ${item.meta.extname}');
+                            }
                             toggleSelected(item);
                           },
                           child: Container(
