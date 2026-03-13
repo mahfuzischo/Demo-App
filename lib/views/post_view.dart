@@ -18,6 +18,7 @@ class PostView extends ConsumerStatefulWidget {
 
 class _PostViewState extends ConsumerState<PostView> {
   TextEditingController feedTxtController = TextEditingController();
+  List<PostFile> selectedFiles = [];
   final List<Color> colors = [
     Colors.white,
     Colors.pink,
@@ -67,32 +68,29 @@ class _PostViewState extends ConsumerState<PostView> {
         actions: [
           TextButton(
             onPressed: () async {
-              PostModel dummyPost = PostModel(
-                communityId: widget.communityId,
-                spaceId: widget.spaceId,
-                feedTxt: feedTxtController.text,
-                uploadType: "photos",
-                isBackground: 0,
-                files: [
-                  PostFile(
-                    extname: "jpg",
-                    fileLoc:
-                        "https://ezycourse.b-cdn.net/2903/cmldokxpn1mkteq8z04ez2j9p.jpg",
-                    originalName:
-                        "image_picker_0E563D0A-E6E3-41EE-8E25-B2A5E3A1F60C.jpg",
-                    size: 0,
-                    type: "image",
-                  ),
-                ],
-              );
+              if (feedTxtController.value.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Please write something")),
+                );
+                return;
+              } else {
+                PostModel dummyPost = PostModel(
+                  communityId: widget.communityId,
+                  spaceId: widget.spaceId,
+                  feedTxt: feedTxtController.text,
+                  uploadType: "photos",
+                  isBackground: 0,
+                  files: selectedFiles,
+                );
 
-              await ref
-                  .read(PostViewModelProvider.notifier)
-                  .createPost(dummyPost);
-              await ref
-                  .read(feedViewModelProvider.notifier)
-                  .fetchFeed(widget.communityId, widget.spaceId);
-              Navigator.pop(context);
+                await ref
+                    .read(PostViewModelProvider.notifier)
+                    .createPost(dummyPost);
+                await ref
+                    .read(feedViewModelProvider.notifier)
+                    .fetchFeed(widget.communityId, widget.spaceId);
+                Navigator.pop(context);
+              }
             },
             child: postViewData.isLoading
                 ? const CircularProgressIndicator.adaptive()
@@ -217,7 +215,6 @@ class _PostViewState extends ConsumerState<PostView> {
                                       galleryFileType: 'image',
                                     );
                                 }
-                                ;
                               },
                             );
 
@@ -227,6 +224,20 @@ class _PostViewState extends ConsumerState<PostView> {
 
                         if (result != null) {
                           debugPrint("selected item count: ${result.length}");
+
+                          result.map((item) {
+                            return PostFile(
+                              extname: item.originalName.split('.').last,
+                              fileLoc:
+                                  item.meta.thumbnailLink ??
+                                  'https://ezycourse.b-cdn.net/2903/cmmk8hxsp3lmkh0qtadke6piz.png',
+                              originalName: item.meta.originalName,
+                              size: item.meta.size ?? 0,
+                              type: item.fileType,
+                            );
+                          }).toList();
+
+                          setState(() {});
                         } else {
                           debugPrint("no items selected");
                         }
