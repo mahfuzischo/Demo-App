@@ -106,160 +106,208 @@ class _PostViewState extends ConsumerState<PostView> {
         ],
       ),
 
-      body: Container(
-        width: double.infinity,
-        color: const Color.fromRGBO(243, 243, 243, 1),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child: Column(
-            mainAxisAlignment: .start,
-            children: [
-              Row(
-                mainAxisAlignment: .start,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(userData.user!.profilePic),
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    userData.user!.fullName,
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300, width: 2),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
+      body: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: Container(
+          width: double.infinity,
+          color: const Color.fromRGBO(243, 243, 243, 1),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            child: Column(
+              mainAxisAlignment: .start,
+              children: [
+                Row(
+                  mainAxisAlignment: .start,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(userData.user!.profilePic),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      userData.user!.fullName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
 
-                child: TextField(
-                  maxLines: 5,
-                  controller: feedTxtController,
-                  decoration: InputDecoration(
-                    hintText: 'What\'s on your mind?',
-                    border: InputBorder.none,
+                  child: TextField(
+                    maxLines: 5,
+                    controller: feedTxtController,
+                    decoration: InputDecoration(
+                      hintText: 'What\'s on your mind?',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                height: 35,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: colors.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: EdgeInsetsGeometry.all(5),
-                      child: GestureDetector(
-                        child: Container(
-                          width: 25,
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 35,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: colors.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      selectedFiles.isNotEmpty
+                          ? print("file link: ${selectedFiles.first.fileLoc}")
+                          : print("no files ");
+                      return Padding(
+                        padding: EdgeInsetsGeometry.all(5),
+                        child: GestureDetector(
+                          child: Container(
+                            width: 25,
 
-                          constraints: BoxConstraints(maxHeight: 25),
-                          decoration: BoxDecoration(
-                            color: colors[index],
-                            borderRadius: BorderRadius.circular(2),
+                            constraints: BoxConstraints(maxHeight: 25),
+                            decoration: BoxDecoration(
+                              color: colors[index],
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 50),
-              Expanded(
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    childAspectRatio: 0.9,
-                    mainAxisExtent: 50,
+                      );
+                    },
                   ),
-                  itemCount: postOptions.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () async {
-                        final result =
-                            await showModalBottomSheet<List<GalleryItemModel>>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                // Example: Displaying an icon based on enum status
-                                switch (index) {
-                                  case 0:
-                                    return GalleryWidget(
-                                      galleryFileType: "image",
-                                    );
-                                  case 1:
-                                    return GalleryWidget(
-                                      galleryFileType: "video",
-                                    );
-                                  case 2:
-                                    return GalleryWidget(
-                                      galleryFileType: "image",
-                                    );
-                                  case 3:
-                                    return GalleryWidget(
-                                      galleryFileType: "image",
-                                    );
-                                  case 4:
-                                    return GalleryWidget(
-                                      galleryFileType: "image",
-                                    );
-                                  default:
-                                    return GalleryWidget(
-                                      galleryFileType: 'image',
-                                    );
-                                }
-                              },
-                            );
-
-                        debugPrint(
-                          "${postOptions[index]["label"]} button pressed ",
-                        );
-
-                        if (result != null) {
-                          debugPrint("selected item count: ${result.length}");
-
-                          result.map((item) {
-                            return PostFile(
-                              extname: item.originalName.split('.').last,
-                              fileLoc:
-                                  item.meta.thumbnailLink ??
-                                  'https://ezycourse.b-cdn.net/2903/cmmk8hxsp3lmkh0qtadke6piz.png',
-                              originalName: item.meta.originalName,
-                              size: item.meta.size ?? 0,
-                              type: item.fileType,
-                            );
-                          }).toList();
-
-                          setState(() {});
-                        } else {
-                          debugPrint("no items selected");
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: postOptions[index]["icon"],
-                            ),
-                            Text(postOptions[index]["label"]),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
                 ),
-              ),
-            ],
+                SizedBox(height: 50),
+                selectedFiles.isNotEmpty
+                    ? Expanded(
+                        child: selectedFiles.length == 1
+                            ? Container(
+                                width: 50,
+                                height: 50,
+                                child: Image(
+                                  image: NetworkImage(
+                                    selectedFiles.first.fileLoc,
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: selectedFiles.length,
+                                scrollDirection: Axis.horizontal,
+
+                                itemBuilder: (BuildContext context, int index) {
+                                  print("file link: ${selectedFiles[index]}");
+                                  return Container(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image(
+                                      image: NetworkImage(
+                                        selectedFiles[index].fileLoc,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                      )
+                    : SizedBox(),
+                SizedBox(height: 30),
+                Expanded(
+                  child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                          childAspectRatio: 0.9,
+                          mainAxisExtent: 50,
+                        ),
+                    itemCount: postOptions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final result =
+                              await showModalBottomSheet<
+                                List<GalleryItemModel>
+                              >(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // Example: Displaying an icon based on enum status
+                                  switch (index) {
+                                    case 0:
+                                      return GalleryWidget(
+                                        galleryFileType: "image",
+                                      );
+                                    case 1:
+                                      return GalleryWidget(
+                                        galleryFileType: "video",
+                                      );
+                                    case 2:
+                                      return GalleryWidget(
+                                        galleryFileType: "image",
+                                      );
+                                    case 3:
+                                      return GalleryWidget(
+                                        galleryFileType: "image",
+                                      );
+                                    case 4:
+                                      return GalleryWidget(
+                                        galleryFileType: "image",
+                                      );
+                                    default:
+                                      return GalleryWidget(
+                                        galleryFileType: 'image',
+                                      );
+                                  }
+                                },
+                              );
+
+                          debugPrint(
+                            "${postOptions[index]["label"]} button pressed ",
+                          );
+
+                          if (result != null) {
+                            debugPrint("selected item count: ${result.length}");
+
+                            final convertFiles = result.map((item) {
+                              return PostFile(
+                                extname: item.originalName.split('.').last,
+                                fileLoc: item.isImage
+                                    ? item.meta.fileLink!
+                                    : item.isVideo
+                                    ? item.meta.fileLink!
+                                    : 'https://ezycourse.b-cdn.net/2903/cmmk8hxsp3lmkh0qtadke6piz.png',
+                                originalName: item.meta.originalName,
+                                size: item.meta.size ?? 0,
+                                type: item.fileType,
+                              );
+                            }).toList();
+
+                            setState(() {
+                              selectedFiles = convertFiles;
+                            });
+                          } else {
+                            debugPrint("no items selected");
+                          }
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: postOptions[index]["icon"],
+                              ),
+                              Text(postOptions[index]["label"]),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
