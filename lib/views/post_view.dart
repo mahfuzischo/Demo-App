@@ -157,9 +157,6 @@ class _PostViewState extends ConsumerState<PostView> {
                     scrollDirection: Axis.horizontal,
                     itemCount: colors.length,
                     itemBuilder: (BuildContext context, int index) {
-                      selectedFiles.isNotEmpty
-                          ? print("file link: ${selectedFiles.first.fileLoc}")
-                          : print("no files ");
                       return Padding(
                         padding: EdgeInsetsGeometry.all(5),
                         child: GestureDetector(
@@ -179,16 +176,50 @@ class _PostViewState extends ConsumerState<PostView> {
                 ),
                 SizedBox(height: 50),
                 selectedFiles.isNotEmpty
-                    ? Expanded(
+                    ? SizedBox(
+                        height: 80,
                         child: selectedFiles.length == 1
-                            ? Container(
-                                width: 50,
-                                height: 50,
-                                child: Image(
-                                  image: NetworkImage(
-                                    selectedFiles.first.fileLoc,
+                            ? Stack(
+                                children: [
+                                  Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Image(
+                                      fit: BoxFit.cover,
+                                      height: 70,
+                                      width: 70,
+                                      image: NetworkImage(
+                                        selectedFiles.first.fileLoc,
+                                      ),
+                                    ),
                                   ),
-                                ),
+
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedFiles.removeAt(0);
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black54,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: const Icon(
+                                          Icons.close,
+                                          size: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             : ListView.builder(
                                 itemCount: selectedFiles.length,
@@ -196,19 +227,57 @@ class _PostViewState extends ConsumerState<PostView> {
 
                                 itemBuilder: (BuildContext context, int index) {
                                   print("file link: ${selectedFiles[index]}");
-                                  return Container(
-                                    width: 50,
-                                    height: 50,
-                                    child: Image(
-                                      image: NetworkImage(
-                                        selectedFiles[index].fileLoc,
-                                      ),
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: Image(
+                                            fit: BoxFit.cover,
+                                            height: 70,
+                                            width: 70,
+                                            image: NetworkImage(
+                                              selectedFiles[index].fileLoc,
+                                            ),
+                                          ),
+                                        ),
+
+                                        Positioned(
+                                          top: 4,
+                                          right: 4,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedFiles.removeAt(index);
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black54,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              padding: const EdgeInsets.all(4),
+                                              child: const Icon(
+                                                Icons.close,
+                                                size: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },
                               ),
                       )
-                    : SizedBox(),
+                    : SizedBox(height: 20),
                 SizedBox(height: 30),
                 Expanded(
                   child: GridView.builder(
@@ -274,9 +343,11 @@ class _PostViewState extends ConsumerState<PostView> {
                                 fileLoc: item.isImage
                                     ? item.meta.fileLink!
                                     : item.isVideo
-                                    ? item.meta.fileLink!
+                                    ? item.meta.fileLink ??
+                                          item.meta.thumbnailLink!
                                     : 'https://ezycourse.b-cdn.net/2903/cmmk8hxsp3lmkh0qtadke6piz.png',
-                                originalName: item.meta.originalName,
+                                originalName:
+                                    item.meta.originalName ?? item.fileName,
                                 size: item.meta.size ?? 0,
                                 type: item.fileType,
                               );
