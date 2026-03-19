@@ -19,6 +19,7 @@ class PostView extends ConsumerStatefulWidget {
 class _PostViewState extends ConsumerState<PostView> {
   TextEditingController feedTxtController = TextEditingController();
   List<PostFile> selectedFiles = [];
+  late String postType;
   final List<Color> colors = [
     Colors.white,
     Colors.pink,
@@ -78,7 +79,7 @@ class _PostViewState extends ConsumerState<PostView> {
                   communityId: widget.communityId,
                   spaceId: widget.spaceId,
                   feedTxt: feedTxtController.text,
-                  uploadType: "photos",
+                  uploadType: postType,
                   isBackground: 0,
                   files: selectedFiles,
                 );
@@ -115,6 +116,7 @@ class _PostViewState extends ConsumerState<PostView> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: Column(
               mainAxisAlignment: .start,
+              crossAxisAlignment: .start,
               children: [
                 Row(
                   mainAxisAlignment: .start,
@@ -224,6 +226,7 @@ class _PostViewState extends ConsumerState<PostView> {
                             : ListView.builder(
                                 itemCount: selectedFiles.length,
                                 scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
 
                                 itemBuilder: (BuildContext context, int index) {
                                   print("file link: ${selectedFiles[index]}");
@@ -300,7 +303,6 @@ class _PostViewState extends ConsumerState<PostView> {
                               >(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  // Example: Displaying an icon based on enum status
                                   switch (index) {
                                     case 0:
                                       return GalleryWidget(
@@ -336,7 +338,6 @@ class _PostViewState extends ConsumerState<PostView> {
 
                           if (result != null) {
                             debugPrint("selected item count: ${result.length}");
-
                             final convertFiles = result.map((item) {
                               return PostFile(
                                 extname: item.originalName.split('.').last,
@@ -355,6 +356,11 @@ class _PostViewState extends ConsumerState<PostView> {
 
                             setState(() {
                               selectedFiles = convertFiles;
+                              if (result.isNotEmpty) {
+                                postType = result.first.isVideo
+                                    ? "videos"
+                                    : "photos";
+                              }
                             });
                           } else {
                             debugPrint("no items selected");

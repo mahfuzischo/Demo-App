@@ -71,6 +71,7 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height * .85,
         width: double.infinity,
+
         child: Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -150,29 +151,17 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                         itemBuilder: (BuildContext context, int index) {
                           final item = galleryState.galleryItems![index];
                           bool selected = isSelected(item);
-                          // print("Image link: ${item.meta.fileLink}");
-                          // print("Thumbnail link: ${item.meta.thumbnailLink}");
 
                           return GestureDetector(
                             onTap: () {
-                              if (item.meta.extname == null) {
-                                debugPrint(
-                                  "picked file extension name: ${item.originalName.split('.').last}",
-                                );
-                              } else {
-                                debugPrint('extname: ${item.meta.extname}');
-                              }
-                              debugPrint(
-                                'selected items count: ${selectedFilesData.length}',
-                              );
                               toggleSelected(item);
                             },
                             child: Container(
                               clipBehavior: Clip.hardEdge,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  width: 1,
-                                  color: selected ? Colors.green : Colors.grey,
+                                  width: selected ? 3 : 1,
+                                  color: selected ? Colors.blue : Colors.grey,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
@@ -242,14 +231,18 @@ class _GalleryWidgetState extends ConsumerState<GalleryWidget> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pop(context, selectedFilesData);
+                          if (selectedFilesData.isNotEmpty) {
+                            Navigator.pop(context, selectedFilesData);
+                          }
                         },
-                        child: const Text(
+                        child: Text(
                           'Submit',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: Color.fromRGBO(38, 105, 113, 1),
+                            color: selectedFilesData.isNotEmpty
+                                ? Colors.white
+                                : Colors.grey.shade700,
                           ),
                         ),
                       ),
