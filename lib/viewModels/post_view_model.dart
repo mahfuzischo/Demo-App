@@ -21,6 +21,9 @@ class PostViewModel extends Notifier<PostState> {
     final url = Uri.parse('${dotenv.env['base_url']}$endpoint');
     final token = await storage.readToken();
     state = state.copyWith(isLoading: true);
+    print("XXXXXXXXXXX");
+    print(post.toJson());
+
     final response = await http.post(
       url,
       headers: {
@@ -44,6 +47,7 @@ class PostViewModel extends Notifier<PostState> {
         error: 'Failed to create post. Status code: ${response.statusCode}',
       );
       debugPrint('Failed to create post. Status code: ${response.statusCode}');
+      debugPrint('Response: ${response.body}');
     }
   }
 }

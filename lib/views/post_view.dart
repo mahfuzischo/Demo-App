@@ -358,7 +358,7 @@ class _PostViewState extends ConsumerState<PostView> {
                               selectedFiles = convertFiles;
                               if (result.isNotEmpty) {
                                 postType = result.first.isVideo
-                                    ? "videos"
+                                    ? "video"
                                     : "photos";
                               }
                             });
