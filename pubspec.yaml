@@ -40,6 +40,8 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   video_player: ^2.10.1
   image_picker: ^1.2.1
+  chewie: ^1.13.0
+
 
 dev_dependencies:
   flutter_test:

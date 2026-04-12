@@ -285,10 +285,23 @@ class _FeedViewState extends ConsumerState<FeedView> {
                                                     fit: BoxFit.cover,
                                                   ),
                                                 )
-                                              : VideoPlayerWidget(
-                                                  videoURL:
-                                                      feed.files.first.hlsLink,
-                                                ),
+                                              : (feed
+                                                        .files
+                                                        .first
+                                                        .hlsLink
+                                                        .isNotEmpty
+                                                    ? VideoPlayerWidget(
+                                                        videoURL: feed
+                                                            .files
+                                                            .first
+                                                            .hlsLink,
+                                                      )
+                                                    : VideoPlayerWidget(
+                                                        videoURL: feed
+                                                            .files
+                                                            .first
+                                                            .playLink,
+                                                      )),
                                         )
                                       else
                                         Expanded(

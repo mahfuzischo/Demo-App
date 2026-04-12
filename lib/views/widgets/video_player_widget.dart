@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -11,86 +12,49 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
+  ChewieController? chewieController;
 
   @override
   void initState() {
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoURL))
       ..initialize().then((_) {
+        chewieController = ChewieController(
+          videoPlayerController: _controller,
+          autoPlay: false,
+          looping: true,
+          allowFullScreen: true,
+          allowMuting: true,
+        );
         setState(() {});
       });
-
+    _controller.addListener(() {
+      if (_controller.value.hasError) {
+        debugPrint("Video Error: ${_controller.value.errorDescription}");
+        debugPrint("video URL::: ${widget.videoURL}");
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    chewieController?.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: [
-            AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
-            ),
-            VideoProgressIndicator(
-              _controller,
-              allowScrubbing: true,
-              colors: VideoProgressColors(
-                playedColor: Color.fromARGB(255, 15, 156, 221),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: .spaceAround,
-          children: [
-            //seek backward
-            IconButton(
-              onPressed: () async {
-                Duration currentDuration = _controller.value.position;
-                await _controller.seekTo(
-                  currentDuration - Duration(seconds: 10),
-                );
-              },
-              icon: Icon(Icons.replay_10),
-            ),
-            //play/pause
-            IconButton(
-              onPressed: () async {
-                if (_controller.value.isPlaying) {
-                  debugPrint("Playing? : ${_controller.value.isPlaying}");
-                  await _controller.pause();
-                  debugPrint("Playing? : ${_controller.value.isPlaying}");
-                } else {
-                  await _controller.play();
-                }
-              },
-              icon: Icon(
-                _controller.value.isPlaying
-                    ? Icons.pause_circle
-                    : Icons.play_arrow_rounded,
-              ),
-            ),
-            //seek forward
-            IconButton(
-              onPressed: () async {
-                Duration currentDuration = _controller.value.position;
-                await _controller.seekTo(
-                  currentDuration + Duration(seconds: 10),
-                );
-              },
-              icon: Icon(Icons.forward_10),
-            ),
-          ],
-        ),
-      ],
-    );
+    debugPrint("video url::::::: ${widget.videoURL}");
+    return widget.videoURL.isEmpty
+        ? Center(child: Text("No video URL found of this post"))
+        : chewieController != null &&
+              chewieController!.videoPlayerController.value.isInitialized
+        ? AspectRatio(
+            aspectRatio:
+                chewieController!.videoPlayerController.value.aspectRatio,
+            child: Chewie(controller: chewieController!),
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }
